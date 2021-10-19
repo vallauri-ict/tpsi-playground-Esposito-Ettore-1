@@ -1,0 +1,2 @@
+# Esercizio 8
+Creazione di una pagina web tramitre un server di nodeJS che permette di visualizzare un elenco di radio italiane divise per regione. È anche possibile valutare positivamente le varie radio

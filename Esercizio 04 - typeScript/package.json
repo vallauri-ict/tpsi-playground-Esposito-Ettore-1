@@ -1,0 +1,16 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "description": "Esercizio 4",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ettore",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mime": "^2.0.3",
+    "@types/node": "^16.9.6",
+    "mime": "^2.5.2"
+  }
+}
