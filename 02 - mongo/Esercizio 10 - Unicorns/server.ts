@@ -36,21 +36,41 @@ dispatcher.addListener("GET", "servizio2", function (req, res) {
 
 //modello di accesso al database
 
-mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 1
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 1a
     if(!err)
     {
         let db = client.db(dbName);
         let collection = db.collection("Unicorns");
         collection.find({weight : { $gte : 700, $lte : 800 }}).toArray(function (err, data) {
             if(!err)
-                console.log("Query 1", data);
+                console.log("Query 1a", data);
             else
-                console.log("Query 1", err.message);
+                console.log("Query 1a", err.message);
             client.close();
         });
     }
     else
-        console.log("Query 1", err.message);
+        console.log("Query 1a", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 1b
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        let request = collection.find({weight : { $gte : 700, $lte : 800 }}).toArray();
+        request.then(function (data) {
+            console.log("Query 1b", data);
+        });
+        request.catch(function (err) {
+            console.log("Query 1b", err);
+        });
+        request.finally(function () {
+            client.close();
+        });
+    }
+    else
+        console.log("Query 1b", err.message);
 });
 
 mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 2
@@ -328,4 +348,90 @@ mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 17
     }
     else
         console.log("query 17", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 18
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        //upsert come opzione aggiunge il record se esso non è trovato
+        collection.updateOne({ "name" : "Pluto" }, { $inc : { "vampires" : 1 } }, { upsert : true } , function (err, data) {
+            if(!err)
+                console.log("query 18", data);
+            else
+                console.log("query 18", err.message);
+            client.close();
+        });
+    }
+    else
+        console.log("query 18", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 19
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        collection.updateMany({ "vaccinated" : { $exists : false }}, { $set : { "vaccinated" : false } }, function (err, data) {
+            if(!err)
+                console.log("query 19", data);
+            else
+                console.log("query 19", err.message);
+            client.close();
+        });
+    }
+    else
+        console.log("query 19", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 20
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        collection.deleteMany({ "loves" : { $all : [ "grape", "carrot" ] } }, function (err, data) {
+            if(!err)
+                console.log("query 20", data);
+            else
+                console.log("query 20", err.message);
+            client.close();
+        });
+    }
+    else
+        console.log("query 20", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 21
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        collection.find({ "gender" : "f" }).sort({ "vampires" : -1 }).limit(1).project({ "name" : 1, "vampires" : 1, "_id" : 0 }).toArray(function (err, data) {
+            if(!err)
+                console.log("query 21", data);
+            else
+                console.log("query 21", err.message);
+            client.close();
+        });
+    }
+    else
+        console.log("query 21", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 22
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        collection.replaceOne({ "name" : "Pluto" }, { "name" : "Pluto", "vampires" : 50, "loves" : [ "apple" ] }, { "upsert" : true }, function (err, data) {
+            if(!err)
+                console.log("query 22", data);
+            else
+                console.log("query 22", err.message);
+            client.close();
+        });
+    }
+    else
+        console.log("query 22", err.message);
 });
