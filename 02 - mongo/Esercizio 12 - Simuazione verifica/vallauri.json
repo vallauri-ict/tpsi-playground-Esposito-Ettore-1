@@ -1,0 +1,402 @@
+[{
+    "nome": "Alfio",
+	"genere": "m",
+	"classe": "5A",
+	"italiano" : [6, 6, 6],
+	"matematica" : [7, 7, 6, 8, 9],
+	"informatica" : [8, 8, 8],
+	"sistemi" : [5, 5, 4],
+	"assenze":3,
+	"dob": { "$date": "2000-01-13T00:00:00Z"}
+},
+{	
+	"nome": "Beatrice",
+	"genere": "f",
+	"classe": "5A",
+	"italiano" : [6, 9, 6],
+	"matematica" : [7, 8, 6],
+	"informatica" : [8, 5, 5],
+	"sistemi" : [5, 5, 4],
+	"assenze":6,
+	"dob": { "$date": "2000-02-13T00:00:00Z"}
+},
+{
+	"nome": "Carlo",
+	"genere": "m",
+	"classe": "5A",
+	"italiano" : [8, 6, 6],
+	"matematica" : [5, 9, 6],
+	"informatica" : [8, 7, 7],
+	"sistemi" : [5, 7, 4],
+	"assenze":0,
+	"dob": { "$date": "2000-03-13T00:00:00Z"}
+},
+{
+	"nome": "Flaminia",
+	"genere": "f",
+	"classe": "5A",
+	"italiano" : [6, 5, 5, 7, 9],
+	"matematica" : [7, 4, 4],
+	"informatica" : [9, 5, 8],
+	"sistemi" : [5, 8, 7, 5],
+	"assenze":13,
+	"dob": { "$date": "2000-04-13T00:00:00Z"}
+},
+{
+	"nome": "Daniela",
+	"genere": "f",
+	"classe": "5A",
+	"italiano" : [4, 5, 6],
+	"matematica" : [8, 4, 6, 5 ,8, 4],
+	"informatica" : [4, 4, 8],
+	"sistemi" : [5, 6, 6],
+	"assenze":9,
+	"dob": { "$date": "2000-05-13T00:00:00Z"}
+},
+{
+	"nome": "Eraldo",
+	"genere": "m",
+	"classe": "5A",
+	"italiano" : [6, 6, 6],
+	"matematica" : [7, 7, 6],
+	"informatica" : [8, 8, 8],
+	"sistemi" : [5, 5, 4],
+	"assenze":12,
+	"dob": { "$date": "2000-06-13T00:00:00Z"}
+},
+{
+	"nome": "Gustavo",
+	"genere": "m",
+	"classe": "5B",
+	"italiano" : [6, 5, 5],
+	"matematica" : [7, 5, 6, 8],
+	"informatica" : [6, 7, 6],
+	"sistemi" : [5, 6, 4, 7],
+	"assenze":3,
+	"dob": { "$date": "2000-07-13T00:00:00Z"}
+},
+{
+	"nome": "Irma",
+	"genere": "f",
+	"classe": "5B",
+	"italiano" : [6, 5, 6, 8],
+	"matematica" : [7, 6, 4, 9],
+	"informatica" : [9, 4, 8],
+	"sistemi" : [4, 4, 4],
+	"assenze":5,
+	"dob": { "$date": "2000-08-13T00:00:00Z"}
+},
+{
+	"nome": "Leonardo",
+	"genere": "m",
+	"classe": "5B",
+	"italiano" : [6, 4, 4],
+	"matematica" : [7, 9, 6],
+	"informatica" : [8, 9, 8],
+	"sistemi" : [9, 9, 4],
+	"assenze":21,
+	"dob": { "$date": "2000-09-13T00:00:00Z"}
+},
+{
+	"nome": "Marta",
+	"genere": "f",
+	"classe": "5B",
+	"italiano" : [9, 9, 9],
+	"matematica" : [8, 8, 8],
+	"informatica" : [8, 6, 8, 6, 4],
+	"sistemi" : [5, 4, 4, 6],
+	"assenze":7,
+	"dob": { "$date":"2000-10-13T00:00:00Z"}
+},
+{
+	"nome": "Nicola",
+	"genere": "m",
+	"classe": "5B",
+	"italiano" : [4, 5, 6, 7],
+	"matematica" : [7, 6, 5],
+	"informatica" : [8, 5, 5],
+	"sistemi" : [5, 8, 4],
+	"assenze":1,
+	"dob": { "$date": "2000-11-13T00:00:00Z"}
+},
+{
+	"nome": "Olga",
+	"genere": "f",
+	"classe": "5B",
+	"italiano" : [6, 7, 7],
+	"matematica" : [7, 6, 6],
+	"informatica" : [8, 6, 6, 6],
+	"sistemi" : [5, 9, 4],
+	"assenze":0,
+	"dob": { "$date": "2000-12-13T11:35:00+01:00"}
+},
+
+
+
+{
+	"nome": "Roberto",
+	"genere": "m",
+	"classe": "4A",
+	"italiano" : [5, 5, 5],
+	"matematica" : [7, 8, 6],
+	"informatica" : [8, 7, 7, 7],
+	"sistemi" : [8, 7, 4],
+	"assenze":20,
+	"dob": { "$date": "2001-01-13T00:00:00Z"}
+},
+{	
+	"nome": "Annalisa",
+	"genere": "f",
+	"classe": "4A",
+	"italiano" : [4, 4, 6, 8],
+	"matematica" : [7, 6, 6],
+	"informatica" : [8, 6, 6],
+	"sistemi" : [5, 6, 6],
+	"assenze":9,
+	"dob": { "$date": "2001-02-13T00:00:00Z"}
+},
+{
+	"nome": "Piero",
+	"genere": "m",
+	"classe": "4A",
+	"italiano" : [6, 4, 6],
+	"matematica" : [8, 7, 9, 4],
+	"informatica" : [7, 7, 7],
+	"sistemi" : [5, 6, 6],
+	"assenze":12,
+	"dob": { "$date": "2001-03-13T00:00:00Z"}
+},
+{
+	"nome": "Elly",
+	"genere": "f",
+	"classe": "4A",
+	"italiano" : [6, 6, 6, 9],
+	"matematica" : [6, 5, 4],
+	"informatica" : [4, 5, 6, 7],
+	"sistemi" : [7, 7, 4],
+	"assenze":5,
+	"dob": { "$date": "2001-04-13T00:00:00Z"}
+},
+{
+	"nome": "Bruna",
+	"genere": "f",
+	"classe": "4A",
+	"italiano" : [8, 8, 6],
+	"matematica" : [7, 8, 6],
+	"informatica" : [4, 8, 8],
+	"sistemi" : [5, 7, 4],
+	"assenze":7,
+	"dob": { "$date": "2001-05-13T00:00:00Z"}
+},
+{
+	"nome": "Benedetto",
+	"genere": "m",
+	"classe": "4A",
+	"italiano" : [6, 7, 6],
+	"matematica" : [4, 4, 6],
+	"informatica" : [8, 8, 4, 4],
+	"sistemi" : [5, 9, 4],
+	"assenze":13,
+	"dob": { "$date": "2001-06-13T00:00:00Z"}
+},
+{
+	"nome": "Rolando",
+	"genere": "m",
+	"classe": "4B",
+	"italiano" : [6, 8, 6],
+	"matematica" : [7, 7, 6],
+	"informatica" : [6, 8, 8],
+	"sistemi" : [5, 6, 9, 9],
+	"assenze":21,
+	"dob": { "$date": "2001-07-13T00:00:00Z"}
+},
+{
+	"nome": "Paola",
+	"genere": "f",
+	"classe": "4B",
+	"italiano" : [6, 5, 6, 8],
+	"matematica" : [7, 5, 6],
+	"informatica" : [8, 4, 8],
+	"sistemi" : [5, 8, 4],
+	"assenze":0,
+	"dob": { "$date": "2001-08-13T00:00:00Z"}
+},
+{
+	"nome": "Enrico",
+	"genere": "m",
+	"classe": "4B",
+	"italiano" : [6, 9, 6, 4],
+	"matematica" : [7, 6, 6],
+	"informatica" : [4, 6, 8],
+	"sistemi" : [9, 6, 4],
+	"assenze":5,
+	"dob": { "$date": "2001-09-13T00:00:00Z"}
+},
+{
+	"nome": "Marina",
+	"genere": "f",
+	"classe": "4B",
+	"italiano" : [6, 7, 7, 5],
+	"matematica" : [7, 6, 6],
+	"informatica" : [8, 7, 7],
+	"sistemi" : [5, 5, 8],
+	"assenze":4,
+	"dob": { "$date":"2001-10-13T00:00:00Z"}
+},
+{
+	"nome": "Antonio",
+	"genere": "m",
+	"classe": "4B",
+	"italiano" : [6, 6, 6],
+	"matematica" : [7, 7, 6],
+	"informatica" : [8, 4, 8],
+	"sistemi" : [5, 5, 4],
+	"assenze":7,
+	"dob": { "$date": "2001-11-13T00:00:00Z"}
+},
+{
+	"nome": "Ilva",
+	"genere": "f",
+	"classe": "4B",
+	"italiano" : [6, 5, 6],
+	"matematica" : [7, 5, 6],
+	"informatica" : [8, 5, 8],
+	"sistemi" : [6, 5, 4],
+	"assenze":16,
+	"dob": { "$date": "2001-12-13T11:35:00+01:00"}
+},
+
+
+
+{
+	"nome": "Franco",
+	"genere": "m",
+	"classe": "3A",
+	"italiano" : [6, 6, 7, 7],
+	"matematica" : [7, 4, 6, 4],
+	"informatica" : [4, 4, 4],
+	"sistemi" : [5, 9, 4, 7],
+	"assenze":18,
+	"dob": { "$date": "2002-01-13T00:00:00Z"}
+},
+{	
+	"nome": "Patrizia",
+	"genere": "f",
+	"classe": "3A",
+	"italiano" : [6, 7, 6],
+	"matematica" : [7, 6, 6, 8, 9],
+	"informatica" : [8, 7, 6, 4],
+	"sistemi" : [5, 6, 4, 9],
+	"assenze":4,
+	"dob": { "$date": "2002-02-13T00:00:00Z"}
+},
+{
+	"nome": "Terenzio",
+	"genere": "m",
+	"classe": "3A",
+	"italiano" : [4, 6, 6],
+	"matematica" : [7, 4, 6, 9],
+	"informatica" : [8, 4, 8],
+	"sistemi" : [5, 8, 4],
+	"assenze":20,
+	"dob": { "$date": "2002-03-13T00:00:00Z"}
+},
+{
+	"nome": "Emma",
+	"genere": "f",
+	"classe": "3A",
+	"italiano" : [6, 5, 5],
+	"matematica" : [7, 8, 6],
+	"informatica" : [8, 4, 8],
+	"sistemi" : [5, 6, 4, 6],
+	"assenze":13,
+	"dob": { "$date": "2002-04-13T00:00:00Z"}
+},
+{
+	"nome": "Donatella",
+	"genere": "f",
+	"classe": "3A",
+	"italiano" : [6, 6, 6, 7],
+	"matematica" : [7, 7, 6, 5],
+	"informatica" : [8, 5, 8, 4],
+	"sistemi" : [5, 5, 4, 7, 8],
+	"assenze":13,
+	"dob": { "$date": "2002-05-13T00:00:00Z"}
+},
+{
+	"nome": "Giancarlo",
+	"genere": "m",
+	"classe": "3A",
+	"italiano" : [6, 5, 6, 6],
+	"matematica" : [7, 6, 6],
+	"informatica" : [8, 7, 8, 5],
+	"sistemi" : [5, 9, 4],
+	"assenze":6,
+	"dob": { "$date": "2002-06-13T00:00:00Z"}
+},
+{
+	"nome": "Fabrizio",
+	"genere": "m",
+	"classe": "3B",
+	"italiano" : [6, 5, 6],
+	"matematica" : [7, 7, 8],
+	"informatica" : [8, 4, 8],
+	"sistemi" : [5, 5, 4, 6, 7],
+	"assenze":2,
+	"dob": { "$date": "2002-07-13T00:00:00Z"}
+},
+{
+	"nome": "Costanza",
+	"genere": "f",
+	"classe": "3B",
+	"italiano" : [4, 6, 6],
+	"matematica" : [7, 9, 6],
+	"informatica" : [5, 8, 5],
+	"sistemi" : [5, 5, 4, 6],
+	"assenze":26,
+	"dob": { "$date": "2002-08-13T00:00:00Z"}
+},
+{
+	"nome": "Fulvio",
+	"genere": "m",
+	"classe": "3B",
+	"italiano" : [6, 7, 7],
+	"matematica" : [7, 4, 6],
+	"informatica" : [8, 9, 9],
+	"sistemi" : [5, 8, 4],
+	"assenze":4,
+	"dob": { "$date": "2002-09-13T00:00:00Z"}
+},
+{
+	"nome": "Ornella",
+	"genere": "f",
+	"classe": "3B",
+	"italiano" : [6, 7, 6],
+	"matematica" : [7, 5, 6, 5, 5],
+	"informatica" : [8, 8, 6, 6],
+	"sistemi" : [5, 6, 3],
+	"assenze":3,
+	"dob": { "$date":"2002-10-13T00:00:00Z"}
+},
+{
+	"nome": "Osvaldo",
+	"genere": "m",
+	"classe": "3B",
+	"italiano" : [6, 9, 6],
+	"matematica" : [7, 6, 6],
+	"informatica" : [8, 7, 7],
+	"sistemi" : [5, 5, 3],
+	"assenze":2,
+	"dob": { "$date": "2002-11-13T00:00:00Z"}
+},
+{
+	"nome": "Laura",
+	"genere": "f",
+	"classe": "3B",
+	"italiano" : [6, 7, 7, 5],
+	"matematica" : [7, 7, 6, 7],
+	"informatica" : [6, 6, 8, 9],
+	"sistemi" : [5, 5, 3],
+	"assenze":11,
+	"dob": { "$date": "2002-12-13T11:35:00+01:00"}
+}]

@@ -43,8 +43,8 @@ mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 1
         let collection = db.collection("Orders");
         let request = collection.aggregate([
             { $match : { "status" : "A" } },
-            { $group : { _id : "$cust_id", amount : { $sum : "$amount" } } }, //il nome usato senza "" è il nome che il campo prende nell'output, quello con $ sono come si chiama nell'input
-            { $sort  : { amount : -1 }}
+            { $group : { "_id" : "$cust_id", "amount" : { $sum : "$amount" } } }, //il nome usato senza "" è il nome che il campo prende nell'output, quello con $ sono come si chiama nell'input
+            { $sort  : { "amount" : -1 }}
         ]).toArray();
         request.then(function (data) {
             console.log("Query 1", data);
@@ -66,7 +66,7 @@ mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 2
         let db = client.db(dbName);
         let collection = db.collection("Orders");
         let request = collection.aggregate([
-                { $group:  { _id: "$cust_id", avgAmount: { $avg: "$amount" }, avgTotal: { $avg: { $multiply: ["$qta", "$amount"] } } } }
+                { $group:  { "_id" : "$cust_id", "avgAmount": { $avg: "$amount" }, "avgTotal": { $avg: { $multiply: ["$qta", "$amount"] } } } }
         ]).toArray();
         request.then(function (data) {
             console.log("Query 2", data);
@@ -88,7 +88,7 @@ mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 3
         let db = client.db(dbName);
         let collection = db.collection("Unicorns");
         let request = collection.aggregate([
-                { $group:  { _id : "$gender", total : { $sum : 1 } } }
+                { $group:  { _id : "$gender", "total" : { $sum : 1 } } }
         ]).toArray();
         request.then(function (data) {
             console.log("Query 3", data);
@@ -102,4 +102,123 @@ mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 3
     }
     else
         console.log("Query 3", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 4
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        let request = collection.aggregate([
+                { $group:  { _id : "$gender", "total" : { $avg : "$vampires" } } }
+        ]).toArray();
+        request.then(function (data) {
+            console.log("Query 4", data);
+        });
+        request.catch(function (err) {
+            console.log("Query 4", err);
+        });
+        request.finally(function () {
+            client.close();
+        });
+    }
+    else
+        console.log("Query 4", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 5
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        let request = collection.aggregate([
+            { $group : { _id : { "gender" : "$gender", "hair" : "$hair" }, "nEsemplari" : { $sum : 1 } } },
+            { $sort : { "nEsemplari" : -1, "_id.gender" : -1 } }
+        ]).toArray();
+        request.then(function (data) {
+            console.log("Query 5", data);
+        });
+        request.catch(function (err) {
+            console.log("Query 5", err);
+        });
+        request.finally(function () {
+            client.close();
+        });
+    }
+    else
+        console.log("Query 5", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 6
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Unicorns");
+        let request = collection.aggregate([
+            { $group : { "_id" : {}, "media" : { $avg : "$vampires" } } },
+            { $project : { "_id" : 0, "ris" : { $round : "$media" } } }
+        ]).toArray();
+        request.then(function (data) {
+            console.log("Query 6", data);
+        });
+        request.catch(function (err) {
+            console.log("Query 6", err);
+        });
+        request.finally(function () {
+            client.close();
+        });
+    }
+    else
+        console.log("Query 6", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 7
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Quizzes");
+        let request = collection.aggregate([
+            { $project : { "_id" : 0, "quizAvg" : { $avg : "$quizzes" }, "labAvg" : { $avg : "$labs" }, "examAvg" : { $avg : [ "$midterm", "$final" ] } } },
+            { $project : { "quizAvg" : { $round : ["$quizAvg", 1] }, "labAvg" : { $round : ["$labAvg", 1] }, "examAvg" : { $round : ["$examAvg", 1] } } },
+            { $group : { "_id" : {  }, "quizAvg" : { $avg : "$quizAvg" }, "labAvg" : { $avg : "$labAvg" }, "examAvg" : { $avg : "$examAvg" } } },
+            { $project : { "quizAvg" : { $round : ["$quizAvg", 1] }, "labAvg" : { $round : ["$labAvg", 1] }, "examAvg" : { $round : ["$examAvg", 1] } } }
+        ]).toArray();
+        request.then(function (data) {
+            console.log("Query 7", data);
+        });
+        request.catch(function (err) {
+            console.log("Query 7", err);
+        });
+        request.finally(function () {
+            client.close();
+        });
+    }
+    else
+        console.log("Query 7", err.message);
+});
+
+mongoClient.connect(CONNECTIONSTRING, function(err, client){ //query 8
+    if(!err)
+    {
+        let db = client.db(dbName);
+        let collection = db.collection("Stdents");
+        let request = collection.aggregate([
+            { $match : { "genere" : "f" } },
+            { $project : { "nome" : 1, "classe" : 1, "media" : { $avg : "$voti" } } },
+            { $sort : { "media" : -1 } },
+            { $skip : 1 },
+            { $limit : 1 }
+        ]).toArray();
+        request.then(function (data) {
+            console.log("Query 8", data);
+        });
+        request.catch(function (err) {
+            console.log("Query 8", err);
+        });
+        request.finally(function () {
+            client.close();
+        });
+    }
+    else
+        console.log("Query 8", err.message);
 });
