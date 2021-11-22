@@ -29,15 +29,15 @@ dispatcher.addListener("POST", "servizio1", function (req, res) {
         {
             let db = client.db(dbName);
             let collection = db.collection("Vallauri");
-            let request = collection.find({ $and : [ { "dob" : { $gte : DataDa } }, { "dob" : { $lte : DataA } } ] }).toArray();
+            let request = collection.find({ $and : [ { "dob" : { $gte : DataDa } }, { "dob" : { $lte : DataA } } ] }).project({ "_id" : 0, "nome" : 1, "classe" : 1, "dob" : 1 }).toArray();
             request.then(function (data) { 
                 res.writeHead(200, HEADERS.json);
                 res.write(JSON.stringify(data));
                 res.end();
             });
             request.catch(function (err) {
-                res.writeHead(200, HEADERS.json);
-                res.write(`{ "err" : ${err} }`);
+                res.writeHead(500, HEADERS.json);
+                res.write(JSON.stringify(err));
                 res.end();
             });
             request.finally(function () {
@@ -46,7 +46,7 @@ dispatcher.addListener("POST", "servizio1", function (req, res) {
         }
         else
         {
-            res.writeHead(200, HEADERS.json);
+            res.writeHead(500, HEADERS.json);
             res.write(`{ "err" : ${err} }`);
             res.end();
         }
