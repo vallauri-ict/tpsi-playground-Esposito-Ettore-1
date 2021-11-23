@@ -29,7 +29,7 @@ dispatcher.addListener("POST", "servizio1", function (req, res) {
         {
             let db = client.db(dbName);
             let collection = db.collection("Vallauri");
-            let request = collection.find({ $and : [ { "dob" : { $gte : DataDa } }, { "dob" : { $lte : DataA } } ] }).project({ "_id" : 0, "nome" : 1, "classe" : 1, "dob" : 1 }).toArray();
+            let request = collection.find({ "dob" : { $gte : DataDa, $lte : DataA } }).project({ "_id" : 0, "nome" : 1, "classe" : 1, "dob" : 1 }).toArray();
             request.then(function (data) { 
                 res.writeHead(200, HEADERS.json);
                 res.write(JSON.stringify(data));

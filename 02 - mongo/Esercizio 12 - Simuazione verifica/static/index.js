@@ -3,6 +3,8 @@ $(document).ready(function() {
     let _dateEnd = $("#dataEnd");
     let _table = $("#table");
 
+    _table.parent().hide();
+
     $("#btmInvia").on("click", function () {
         let DataDa = _dateStart.val();
         let DataA = _dateEnd.val();
@@ -23,6 +25,10 @@ $(document).ready(function() {
                     ]
                 });
             }
+            if(data.length != 0)
+                _table.parent().show();
+            else
+            _table.parent().hide();
         });
         request.fail(errore);
     });

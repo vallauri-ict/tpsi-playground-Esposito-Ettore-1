@@ -1,2 +1,2 @@
-# Esercizio 5
-Creazione di un Dispatcher per la gestione delle richieste al server, sia di servizi che di file
+# Esercizio 11
+Esercitazione con le aggregate di MongoDB
