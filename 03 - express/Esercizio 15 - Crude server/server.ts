@@ -97,7 +97,8 @@ app.get("/api/*", function (req, res, next) {
 
     if (!id)
     {
-        let request = collection.find().toArray();
+        let filters = req.query;
+        let request = collection.find(filters).toArray();
         request.then(function (data) {
             res.send(data);
         });

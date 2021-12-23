@@ -8,6 +8,7 @@ $(document).ready(function() {
     let _filters = $(".card").eq(0).hide();
 
     let currentCollection = "";
+    let AggiornaTabella;
 
     $("#btnAdd").prop("disabled", true);
 
@@ -35,7 +36,7 @@ $(document).ready(function() {
         currentCollection = $(this).val();
 
         let request = inviaRichiesta("get", `/api/${currentCollection}`);
-        request.done(function (data) {
+        request.done(AggiornaTabella = function (data) {
             console.log(data);
 
             //tabella
@@ -81,6 +82,23 @@ $(document).ready(function() {
     $("#btnAdd").on("click", function () {
         VisualizzaInvia({ }, "post");
     })
+
+    $("#btnFind").on("click", function(){
+		let filter = {};
+		let hair = $("#lstHair").children("option:selected").val();
+		if (hair)
+			filter["hair"] = hair.toLowerCase();
+		let male = _filters.find("input[type=checkbox]").first().is(":checked");
+		let female = _filters.find("input[type=checkbox]").last().is(":checked");
+		if(male && !female)
+			filter["gender"] = 'm';
+		else if(female && !male)
+			filter["gender"] = 'f';
+		
+		let request = inviaRichiesta("get", `/api/${currentCollection}`, filter);
+		request.done(AggiornaTabella);
+        request.fail(errore);
+	})
 
     //elenco funzioni
 
@@ -155,6 +173,7 @@ $(document).ready(function() {
             console.log(details);
 
             _divCollections.find("input[type=radio]:checked").trigger("click");
+            _divDettagli.empty();
         });
         request.fail(errore);
     }
