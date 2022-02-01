@@ -3,16 +3,17 @@ import * as fs from "fs";
 import * as _mongodb from "mongodb";
 import express from "express";
 import * as bp from "body-parser";
+import cors from "cors";
 
 //mongo
 //const CONNECTIONSTRING = "mongodb://127.0.0.1:27017"; // accesso in locale
-const CONNECTIONSTRING = "mongodb+srv://admin:admin@cluster0.8bz8q.mongodb.net/5B?retryWrites=true&w=majority"; // accesso su atlas
-const dbName = "unicorns";
+const CONNECTIONSTRING = process.env.MONGODB_URI || "mongodb+srv://admin:admin@cluster0.8bz8q.mongodb.net/5B?retryWrites=true&w=majority"; // accesso da heroku
+const dbName = "RecipeBook";
 const mongoClient = _mongodb.MongoClient;
 
 //server
 let app = express();
-const PORT :number = 1337;
+const PORT :number = parseInt(process.env.PORT) || 1337;
 let paginaErrore :string;
 
 const server = _http.createServer(app);
@@ -51,6 +52,27 @@ app.use("/", function (req, res, next) {
         console.log("Parametri BODY", req.body);
     next();
 });
+
+//middleware cors, gestisce le richieste extra origine
+const whitelist = ["https://esposito-ettore-crudserver.herokuapp.com",
+                   "http://esposito-ettore-crudserver.herokuapp.com",
+                   "http://localhost:4200", 
+                   "https://localhost:1337"];
+const corsOptions = {
+    origin: function(origin, callback) {
+        if (!origin)
+            return callback(null, true);
+        if (whitelist.indexOf(origin) === -1)
+        {
+            var msg = 'The CORS policy for this site does not ' + 'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        else
+            return callback(null, true);
+    },
+    credentials: true
+};
+app.use("/", cors(corsOptions));
 
 //connessione a mongodb
 app.use("/", function (req, res, next) {
