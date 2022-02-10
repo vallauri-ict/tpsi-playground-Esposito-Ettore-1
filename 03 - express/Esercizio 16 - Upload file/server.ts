@@ -104,14 +104,6 @@ app.use("/", function (req, res, next) {
 
 // ***** ELENCO SERVIZI ***** //
 
-//intercettazione parametri
-let currentCollection, id;
-app.use("/api/:collection/:id?", function (req, res, next) {
-    currentCollection = req.params.collection;
-    id = req.params.id;
-    next();
-});
-
 app.get("/api/images", function (req, res, next) {
     let client :_mongodb.MongoClient = req["client"];
     let db = client.db(dbName);
