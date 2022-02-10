@@ -72,5 +72,5 @@ io.on('connection', function(clientSocket) {
 
 // stampa i log con data e ora
 function log(msg) {
-	console.log(colors.cyan("[" + new Date().toLocaleTimeString() + "]") + ": " +msg);
+	console.log(colors.cyan("[" + new Date().toLocaleTimeString() + "]") + ": " + msg);
 }
