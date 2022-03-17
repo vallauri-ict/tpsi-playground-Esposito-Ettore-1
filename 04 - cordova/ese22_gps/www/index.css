@@ -1,0 +1,24 @@
+h2, p{
+	text-align:center;
+	font-size:12pt;
+	padding:2px;
+	margin:2px;
+}
+
+
+button{
+	margin-bottom:8px;
+}
+
+
+#results{
+	font-size:13pt;
+}
+
+
+#wrapper{
+	width:800px;
+	height:600px;
+	margin:10px auto;		
+}
+

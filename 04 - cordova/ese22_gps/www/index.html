@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+ <head>
+	<title>GPS</title>
+	<meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"  
+	      content="default-src *;  script-src * 'unsafe-inline';  style-src * 'unsafe-inline';  img-src *  data:  content:; ">
+	<meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover"> 
+	<meta name="color-scheme" content="light dark"> 
+		
+	<link  rel="stylesheet"  href="index.css" />
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="environment.js"> </script>
+    <script src="cordova.js"> </script>
+	<script src="index.js"> </script>
+ </head>
+ 
+ 
+ <body>
+	<h2>Dove mi trovo ?</h2>
+	<p>
+		<button id="btnAvvia">Avvia rilevamento</button>&nbsp;
+		<button id="btnArresta">Arresta rilevamento</button>
+		<br>
+		<label>GPS: </label>
+		<span id="results"> </span> 
+	</p>	
+	<div id="wrapper"></div>
+ </body>
+</html>
