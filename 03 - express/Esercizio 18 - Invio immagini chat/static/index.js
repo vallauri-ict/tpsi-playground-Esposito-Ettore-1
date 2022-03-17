@@ -37,7 +37,7 @@ $(document).ready(function() {
         });
 
         serverSocket.on('message_notify', function(data) {		
-            visualizza(data);
+            visualizza(JSON.parse(data));
         });  
 
         

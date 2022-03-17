@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+ <head>
+    <title>Ese02 Dialog</title>
+	<meta charset="UTF-8">
+    <!-- Cordova Meta Tags -->    
+        <meta http-equiv="Content-Security-Policy" content="default-src *;  script-src * 'unsafe-inline';  style-src * 'unsafe-inline';  img-src *  data:  content:; ">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">	
+	
+    <link rel="stylesheet" type="text/css" href="index.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="cordova.js"> </script>
+	<script src="index.js"> </script>
+ </head>
+	
+ <body>
+	<div> 
+		<h1>Premi un pulsante ...</h1>
+		<p><a href="#" onclick="showAlert()"> Show Alert </a> </p>
+		<p><a href="#" onclick="showConfirm()"> Show Confirm </a> </p>
+		<p><a href="#" onclick="showPrompt()"> Show Prompt </a> </p>
+		<p><a href="#" onclick="playBeep()"> Play Beep </a> </p>
+		<p><a href="#" onclick="vibrate()"> Vibrate </a> </p>   
+	</div>
+ </body>
+</html>

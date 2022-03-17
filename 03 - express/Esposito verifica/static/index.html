@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+    <link rel="icon" href="img/icoVallauri.png" type="image/png" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.js">
+    </script>
+
+    <link rel="stylesheet" href="index.css">
+    <script src="libreria.js"></script>
+    <script src="index.js"></script>
+</head>
+
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class='col-xl-2'> </div>
+            <div class='col-xl-8 col-lg-12'>
+
+                <!-- LOGO SUPERIORE -->
+                <div class='row align-items-center' style="padding-top:30px; padding-bottom:45px;">
+                    <div class="col-sm-1"> </div>
+                    <div class="col-sm-6 text-center">
+                        <img src="img/vallauri.jpg" class="img-fluid">
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <button class="btn btn-light" id="btnHome">
+							Home
+						</button>
+                        <button class="btn btn-light" id="btnRegistrazione">
+							Registrazione
+						</button>
+                        <button class="btn btn-light" id="btnLogin">
+							Login
+						</button>
+                    </div>
+                    <div class='col-sm-1'> </div>
+                </div>
+
+
+                <!-- ******************* IMMAGINE HOME ****************** -->
+                <div class='row' id="divHome">
+                    <div class="col-sm-12 text-center">
+                        <h2 style="margin-top:20px; margin-bottom:30px;">
+                            La chat online più accattivante di sempre
+                        </h2>
+                        <img src="img/chat.jpg" class="img-fluid">
+                    </div>
+                </div>
+
+
+                <!-- ********************* REGISTRAZIONE ********************* -->
+                <fieldset class="border p-2" id="divRegistrazione">
+                    <legend class="w-auto">Registrazione</legend>
+                    <div class='row align-items-center'>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-3 text-center">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text ">username</span>
+                                </div>
+                                <input type="text" class="form-control" id="txtNewUser">
+                            </div>
+                        </div>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="file" id="txtFile">
+                            </div>
+                        </div>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-success" id="btnInviaRegistrazione">
+								Invia
+							</button>
+                        </div>
+                    </div>
+                    <div class='row align-items-center'>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-11 col-sm-12">
+                            <!-- Utente già esistente -->
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- *********************** LOGIN ************************ -->
+                <fieldset class="border p-2" id="divLogin">
+                    <legend class="w-auto">Login</legend>
+                    <div class='row align-items-center'>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-3 text-center">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">username</span>
+                                </div>
+                                <input type="text" class="form-control" id="txtUser">
+                            </div>
+                        </div>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <label for="room">Select a room:&nbsp;&nbsp;</label>
+                                <select id="lstRooms">
+									<option>defaultRoom</option>
+									<option>redRoom</option>
+									<option>greenRoom</option>
+									<option>blueRoom</option>
+								</select>
+                            </div>
+                        </div>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-2">
+                            <button class=" btn btn-success" id="btnInviaLogin">
+								Login
+							</button>
+                        </div>
+                    </div>
+                    <div class='row align-items-center'>
+                        <div class="col-md-1"> </div>
+                        <div class="col-md-11 col-sm-12">
+                            <!-- Utente non valido -->
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- *************** CHAT ************** -->
+                <div class='row' ID="divChat" style="height:600px">
+                    <div class="col-sm-12">
+                        <h1 id="room">Vallauri Chat</h1>
+                        <div id="banner" style="height: 120px;">
+                            <!-- immagini delle persone presenti nella stanza -->
+                            <!--div>
+                                <img src="" alt="">
+                                <p></p>
+                            </div-->
+                        </div>
+                        <div id="wrapper">
+                            <!-- Qui verranno visualizzati i messaggi provenienti dagli utenti -->
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="txtMessage" placeholder="Inserisci qui il tuo messaggio">
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="	btn btn-primary" id="btnInvia">Invia</button>
+                                <button class="	btn btn-primary" id="btnDisconnetti">Disconnetti</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-xl-2'> </div>
+            </div>
+        </div>
+</body>
+
+</html>

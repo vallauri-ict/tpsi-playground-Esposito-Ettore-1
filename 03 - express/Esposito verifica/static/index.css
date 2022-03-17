@@ -1,0 +1,51 @@
+#divRegistrazione>div:nth-of-type(2)>div:nth-of-type(2),
+#divLogin>div:nth-of-type(2)>div:nth-of-type(2) {
+    color: red;
+}
+
+
+/* **************** BANNER IMG ******************* */
+
+#banner {
+    display: flex;
+}
+
+#banner>div {
+    width: 110px;
+}
+
+#banner img {
+    width: 90px;
+}
+
+
+/* **************** CHAT ********************* */
+
+#divChat h1 {
+    text-align: center
+}
+
+#wrapper {
+    height: 70%;
+    overflow: auto;
+    margin: 12px;
+    padding: 8px;
+    background-color: #fee;
+}
+
+
+/* queste classi sono usate dalla funzione visualizza() */
+
+.message-container {
+    margin: 12px 0;
+    padding: 8px;
+    background-color: #f1eeee;
+}
+
+.message-data {
+    font-weight: bold;
+}
+
+.message-from {
+    font-style: italic;
+}
