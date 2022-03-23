@@ -13,7 +13,7 @@
 		
 	<link  rel="stylesheet"  href="index.css" />
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="environment.js"> </script>
+	<script src="enviroment.js"> </script>
     <script src="cordova.js"> </script>
 	<script src="index.js"> </script>
  </head>
@@ -21,13 +21,13 @@
  
  <body>
 	<h2>Dove mi trovo ?</h2>
-	<p>
+	<div id="wrapper">
 		<button id="btnAvvia">Avvia rilevamento</button>&nbsp;
 		<button id="btnArresta">Arresta rilevamento</button>
 		<br>
 		<label>GPS: </label>
 		<span id="results"> </span> 
-	</p>	
-	<div id="wrapper"></div>
+	</div>	
+	<div id="mapContainer">  </div>
  </body>
 </html>

@@ -1,91 +1,110 @@
-﻿
-"use strict"
+﻿"use strict"
 // cordova plugin add cordova-plugin-dialogs, cordova-plugin-geolocation
 
 const URL = "https://maps.googleapis.com/maps/api"
+window.onload = async function(){
+	//soluzione 1
+	/*let promise = caricaGoogleMaps();
+	promise.then(documentReady);
+	promise.catch(function(err){
+		alert('Errore caricamento google maps')	});*/
 
-$(document).ready(function(){
-	// creazione dinamica del CDN di accesso alle google maps
-	var script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.src = URL + '/js?v=3&key='+ MAP_KEY +'&callback=documentReady';
-	document.body.appendChild(script);
-})	
-
+	//soluzione 2 devo mettere async alla funzione e usare l'onload di javascript
+	await caricaGoogleMaps(); //await aspetta che la procedura asincrona finisca prima di continare, non è adatta però per gestire gli errori
+	documentReady();
+};
 
 function documentReady () {	
+  //aspetta che i sensori si attivino
   document.addEventListener('deviceready', function() {
  
-	let watchID = null;
-	let wrapper = $("#wrapper")[0]  // js
-	let results =  $("#results")
+	let mapContainser = $("#mapContainer")[0];  // js
+	let results =  $("#results");
 	
-    $("#btnAvvia").on("click", startWatch)
+    $("#btnAvvia").on("click", startWatch);
     $("#btnArresta").on("click", stopWatch);
 
+	let gpsOptions = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+	
+ 	let watchID = null;
     function startWatch() {
         results.html("");
-		var options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-        };
-        watchID = navigator.geolocation.watchPosition(success, error, options);
-		if (watchID != null)	
-            notifica("Lettura Avviata");	       
-    }
+ 		if (!watchID) {	
+			watchID = navigator.geolocation.watchPosition(visualizzaPosizione, error, gpsOptions);
+            notifica("Lettura Avviata");
+		}	
+    }	
 	
 	function stopWatch(){
-        if (watchID != null){	
+        if (watchID){	
 			navigator.geolocation.clearWatch(watchID);
 			watchID=null;
-			mapID=null;
+			map=null;
 			notifica("Lettura Arrestata");	       
 		}		
 	}
 
-
-	var mapID = null;
-	var markerID = null;
-    function success(position) {
-        let currentPoint = new google.maps.LatLng(position.coords.latitude,
-		                                       position.coords.longitude)
+    /* ************************************************ */
+	let map = null;
+	let marker = null;
+    function visualizzaPosizione(position) {
 		results.html(`${position.coords.latitude.toFixed(5)}, 
 						  ${position.coords.longitude.toFixed(5)}  
 						  &plusmn;${position.coords.accuracy.toFixed(0)}m 
-						  - altitudine:${position.coords.altitude.toFixed(0)}m`)
-		
-		if(mapID == null){		
-			var mapOptions = {
-				center:currentPoint,
+						  - altitudine:${position.coords.altitude}m`);
+        let currentPos = new google.maps.LatLng(position.coords.latitude,
+		                                       position.coords.longitude);
+		if(!map){		
+			let mapOptions = {
+				center:currentPos,
 				zoom: 16,
-				mapTypeId: google.maps.MapTypeId.HYBRID	
-			};
-		
-			mapID = new google.maps.Map(wrapper, mapOptions);
-		
-			markerID = new google.maps.Marker({
-				position: currentPoint,
+			};		
+			map = new google.maps.Map(mapContainer, mapOptions);
+			marker = new google.maps.Marker({
+				map: map,
+				position: currentPos,
 				title: "Questa è la tua posizione!",
-				map: mapID
+				animation:google.maps.Animation.BOUNCE,
 			});	
 		}
-		markerID.setPosition(currentPoint);		
+		
+		else{
+			marker.setPosition(currentPos);
+			// non consente di 'spostare' la mappa. Fastidioso
+			// map.setCenter(currentPos)		
+		}
     }
 	
-
     function error(err) {
-		notifica("Errore: " + err.code + " - " + err.message);
+		// Gli errori di timeout sono abbastanza frequenti
+		console.log("Errore: " + err.code + " - " + err.message);
     }
 	
+  });
+}
 
-   function notifica(msg){		 
-        navigator.notification.alert(
-		    msg,    
-		    function() {},       
-		    "Info",       // Titolo finestra
-		    "Ok"          // pulsante di chiusura
-	    );			 
-	}
-  })
+
+
+function notifica(msg){		 
+	navigator.notification.alert(
+		msg,    
+		function() {},       
+		"GPS",       // Titolo finestra
+		"Ok"          // pulsante di chiusura
+	);			
+}
+
+function caricaGoogleMaps(){
+	return new Promise(function(resolve, reject){
+		let script = document.createElement('script');
+		script.type = 'application/javascript';
+		script.src = URL + '/js?v=3&key=' + GOOGLEKEY;
+		document.body.appendChild(script);
+		script.onload = resolve;
+		script.onerror = reject;
+	});
 }
