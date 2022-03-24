@@ -15,81 +15,101 @@ window.onload = async function(){
 };
 
 function documentReady () {	
-  //aspetta che i sensori si attivino
-  document.addEventListener('deviceready', function() {
- 
-	let mapContainser = $("#mapContainer")[0];  // js
-	let results =  $("#results");
-	
-    $("#btnAvvia").on("click", startWatch);
-    $("#btnArresta").on("click", stopWatch);
+	//aspetta che i sensori si attivino
+	document.addEventListener('deviceready', function() {
+		let mapContainer = $("#mapContainer")[0];  // js
+		let results =  $("#results");
+		
+		$("#btnAvvia").on("click", startWatch);
+		$("#btnArresta").on("click", stopWatch);
 
-	let gpsOptions = {
-		enableHighAccuracy: true,
-		timeout: 5000,
-		maximumAge: 0
-	};
-	
- 	let watchID = null;
-    function startWatch() {
-        results.html("");
- 		if (!watchID) {	
-			watchID = navigator.geolocation.watchPosition(visualizzaPosizione, error, gpsOptions);
-            notifica("Lettura Avviata");
+		mapHeight();
+
+		let gpsOptions = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+		
+		let watchID = null;
+		function startWatch() {
+			results.html("");
+			if (!watchID) {	
+				watchID = navigator.geolocation.watchPosition(visualizzaPosizione, error, gpsOptions);
+				notifica("Lettura Avviata");
+			}	
 		}	
-    }	
-	
-	function stopWatch(){
-        if (watchID){	
-			navigator.geolocation.clearWatch(watchID);
-			watchID=null;
-			map=null;
-			notifica("Lettura Arrestata");	       
-		}		
-	}
+		
+		function stopWatch(){
+			if (watchID){	
+				navigator.geolocation.clearWatch(watchID);
+				watchID=null;
+				map=null;
+				notifica("Lettura Arrestata");	       
+			}		
+		}
 
-    /* ************************************************ */
-	let map = null;
-	let marker = null;
-    function visualizzaPosizione(position) {
-		results.html(`${position.coords.latitude.toFixed(5)}, 
-						  ${position.coords.longitude.toFixed(5)}  
-						  &plusmn;${position.coords.accuracy.toFixed(0)}m 
-						  - altitudine:${position.coords.altitude}m`);
-        let currentPos = new google.maps.LatLng(position.coords.latitude,
-		                                       position.coords.longitude);
-		if(!map){		
-			let mapOptions = {
-				center:currentPos,
-				zoom: 16,
-			};		
-			map = new google.maps.Map(mapContainer, mapOptions);
-			marker = new google.maps.Marker({
-				map: map,
-				position: currentPos,
-				title: "Questa è la tua posizione!",
-				animation:google.maps.Animation.BOUNCE,
-			});	
+		/* ************************************************ */
+		let map = null;
+		let marker = null;
+		function visualizzaPosizione(position) {
+			results.html(`${position.coords.latitude.toFixed(5)}, 
+							${position.coords.longitude.toFixed(5)}  
+							&plusmn;${position.coords.accuracy.toFixed(0)}m 
+							- altitudine:${position.coords.altitude}m`);
+			let currentPos = new google.maps.LatLng(position.coords.latitude,
+												position.coords.longitude);
+			if(!map){		
+				let mapOptions = {
+					center:currentPos,
+					zoom: 16,
+				};		
+				map = new google.maps.Map(mapContainer, mapOptions);
+				marker = new google.maps.Marker({
+					map: map,
+					position: currentPos,
+					title: "Questa è la tua posizione!",
+					animation:google.maps.Animation.BOUNCE,
+				});	
+			}
+			
+			else{
+				marker.setPosition(currentPos);
+				// non consente di 'spostare' la mappa. Fastidioso
+				// map.setCenter(currentPos)		
+			}
 		}
 		
-		else{
-			marker.setPosition(currentPos);
-			// non consente di 'spostare' la mappa. Fastidioso
-			// map.setCenter(currentPos)		
+		function error(err) {
+			// Gli errori di timeout sono abbastanza frequenti
+			console.log("Errore: " + err.code + " - " + err.message);
 		}
-    }
+
+		//non senbrano funzionare
+		mapContainer.addEventListener("touchstart", function (e) {
+			if (e.cancelable)
+				e.preventDefault();
+		});
+
+		mapContainer.addEventListener("touchend", function (e) {
+			if (e.cancelable)
+				e.preventDefault();
+		});
+
+		mapContainer.addEventListener("touchmove", function (e) {
+			if (e.cancelable)
+				e.preventDefault();
+		});
+	});
 	
-    function error(err) {
-		// Gli errori di timeout sono abbastanza frequenti
-		console.log("Errore: " + err.code + " - " + err.message);
-    }
-	
-  });
+	function mapHeight () {
+		let _wrapper = $("#wrapper");
+		let wrapperHeight = parseFloat(_wrapper.css("height")) + 2 * parseFloat(_wrapper.css("margin")) + 2 * parseFloat(_wrapper.css("padding"));
+		$(mapContainer).css("height", parseFloat($(window).height())) - wrapperHeight;
+	}
 }
 
-
-
-function notifica(msg){		 
+function notifica(msg) {		 
 	navigator.notification.alert(
 		msg,    
 		function() {},       
@@ -98,7 +118,7 @@ function notifica(msg){
 	);			
 }
 
-function caricaGoogleMaps(){
+function caricaGoogleMaps() {
 	return new Promise(function(resolve, reject){
 		let script = document.createElement('script');
 		script.type = 'application/javascript';

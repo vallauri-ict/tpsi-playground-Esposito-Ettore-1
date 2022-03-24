@@ -1,0 +1,23 @@
+.pallina {
+	width: 30px;
+	height:30px;
+	border-radius:50%;
+	background-color:#0A0;
+	position:absolute;
+	z-index:1;
+}	
+
+.buca {
+	width: 30px;
+	height:30px;
+	border-radius:50%;
+	background-color:#ddd;
+	border:1px solid #ccc;
+	position:absolute;
+	z-index:-1;
+}	
+
+p{
+	text-align:center;
+	font-size:13pt;
+}

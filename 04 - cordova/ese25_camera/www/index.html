@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html>
-
  <head>
- 	<title>Accelerometro</title>
+	<title>Camera</title>
     <meta charset="UTF-8">
     <!-- Cordova Meta Tags -->    
         <meta http-equiv="Content-Security-Policy"  
@@ -13,23 +11,20 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <meta name="color-scheme" content="light dark">	
 	<!-- -->
-
-    <link rel="stylesheet" href="index.css" />
-    <script src="cordova.js"> </script>
+	
+	<link  rel="stylesheet"  href="index.css" />
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="index.js"></script>
-</head>
-
-<body>
-    <h2>Accelerometro</h2>
-    <p>
-        <button id="btnAvvia">Avvia rilevamento</button>
-        <button id="btnArresta">Arresta rilevamento</button>
-        <br>
-        <label> </label>
-        <span id="results"> </span>
-    </p>
-    <div id="wrapper"></div>
-</body>
-
+    <script src="cordova.js"> </script>
+	<script src="index.js"> </script>
+ </head>
+ 
+ 
+ <body>
+	<h2>Scegli le foto da inviare</h2>
+	<div id="wrapper">
+		<button id="btnScatta">Scatta</button>&nbsp;
+		<button id="btnCerca">Cerca</button>
+		<br>
+	</div>	
+ </body>
 </html>

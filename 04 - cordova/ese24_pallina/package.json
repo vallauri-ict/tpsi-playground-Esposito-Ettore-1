@@ -1,6 +1,6 @@
 {
-  "name": "eud.vallauri.accelerometro",
-  "displayName": "accelerometro",
+  "name": "edu.vallauri.pallina",
+  "displayName": "pallina",
   "version": "1.0.0",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
