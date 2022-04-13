@@ -1,14 +1,13 @@
 "use strict"
 
 $(document).ready(function() {	
-	let _username = $("#usr")
-	let _password = $("#pwd")
-	let _lblErrore = $("#lblErrore")
+	let _username = $("#usr");
+	let _password = $("#pwd");
+	let _lblErrore = $("#lblErrore");
 	
     _lblErrore.hide();
 
-
-	$("#btnLogin").on("click", controllaLogin)
+	$("#btnLogin").on("click", controllaLogin);
 	
 	// il submit deve partire anche senza click 
 	// con il solo tasto INVIO
@@ -16,7 +15,6 @@ $(document).ready(function() {
 	   if (event.keyCode == 13)  
 		   controllaLogin();
 	});
-	
 	
 	function controllaLogin(){
         _username.removeClass("is-invalid");
@@ -42,19 +40,21 @@ $(document).ready(function() {
 			);
 			request.fail(function(jqXHR, test_status, str_error) {
 				if (jqXHR.status == 401) {  // unauthorized
+				{
 					_lblErrore.show();
+					_lblErrore.html("<strong>Attenzione!</strong> " + jqXHR.responseText);
+				}
 				} else
-					errore(jqXHR, test_status, str_error)
+					errore(jqXHR, test_status, str_error);
 			});
-			request.done(function(data) {				
-				window.location.href = "index.html"
+			request.done(function(data, textStatus, request) {
+				//alert(request.getResponseHeader('authorization'));
+				window.location.href = "index.html";
 			})			
 		}
 	}
-	
-	
+		
 	_lblErrore.children("button").on("click", function(){
 		_lblErrore.hide();
-	})
-	
+	});
 });

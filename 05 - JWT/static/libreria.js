@@ -1,10 +1,10 @@
 function inviaRichiesta(method, url, parameters = {}) {
     let contentType;
     if (method.toUpperCase() == "GET") {
-        contentType = "application/x-www-form-urlencoded; charset=UTF-8"
+        contentType = "application/x-www-form-urlencoded; charset=UTF-8";
     } 
 	else {
-        contentType = "application/json; charset=utf-8"
+        contentType = "application/json; charset=utf-8";
         parameters = JSON.stringify(parameters);
     }
 
@@ -15,15 +15,15 @@ function inviaRichiesta(method, url, parameters = {}) {
         contentType: contentType,
         dataType: "json",
         timeout: 5000,
-		beforeSend: function(jqXHR) {
+		beforeSend: function(jqXHR) { //aggiunge il token alla richiesta prima di mandarla
 		   if ("token" in localStorage) {
 				let token = localStorage.getItem("token");  
 				jqXHR.setRequestHeader("Authorization", token);
 		   }
 		},
-		success: function(data, textStatus, jqXHR){
-			let token = jqXHR.getResponseHeader('Authorization')
-			localStorage.setItem("token", token)  
+		success: function(data, textStatus, jqXHR){ //eseguito prima del done
+			let token = jqXHR.getResponseHeader('Authorization');
+			localStorage.setItem("token", token)  ;
 		}
     });
 }
@@ -36,7 +36,7 @@ function errore(jqXHR, testStatus, strError) {
     else if (jqXHR.status == 200)
         alert("Formato dei dati non corretto : " + jqXHR.responseText);
     else if (jqXHR.status == 403) // forbidden
-        window.location.href = "login.html"
+        window.location.href = "login.html";
     else
         alert("Server Error: " + jqXHR.status + " - " + jqXHR.responseText);
 }

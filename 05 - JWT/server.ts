@@ -24,6 +24,7 @@ const HTTPS_PORT = 1338;
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
 const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
 const credentials = { "key": privateKey, "cert": certificate };
+const jwtKey = fs.readFileSync("keys/jwtKey.pem");
 cloudinary.v2.config({
 	cloud_name: environment.cloudinary.CLOUD_NAME,
 	api_key: environment.cloudinary.API_KEY,
@@ -101,34 +102,107 @@ app.use("/", cors(corsOptions));
 app.post("/api/login", function (req, res, next) {
     MongoClient.connect(CONNECTION_STRING, function (err, client) {
         if(err)
-            res.status(501).send("Errore connesione al database")["log"](err);
+            res.status(503).send("Errore connesione al database")["log"](err);
         else
         {
             const db = client.db(DBNAME);
             const collection = db.collection("mail");
             let username = req.body.username;
-            let password = req.body.password
-            collection.findOne({ "username" : username }, function (err, dbUser) {
+            let regex = new RegExp(`^${username}$`, "i"); //per il controllo case unsensitive
+            collection.findOne({ "username" : regex }, function (err, dbUser) {
                 if(err)
                     res.status(500).send("Errore esecuzione query")["log"](err);
+                else if(!req.body.password)
+                    res.status(401).send("Password non valida");
+                else if(!dbUser)
+                    res.status(401).send("Username non valido");
+                else if(!bcrypt.compareSync(req.body.password, dbUser.password))
+                    res.status(401).send("Password non valida");
                 else
                 {
-                    if(!dbUser)
-                        res.status(401).send("Username o password non validi");
-                    else
-                    {
-                        
-                    }
+                    let token = CreateToken(dbUser);
+                    res.setHeader("authorization", token);
+                    res.send({ "ris" : "ok" });
                 }
-            })
+            });
         }
     });
 });
 
+app.use("/api/", function (req, res, next) {
+    let token;
+    if(req.headers.authorization)
+    {
+        token = req.headers.authorization;
+        jwt.verify(token, jwtKey, function (err, payload) {
+            if(err)
+                res.status(403).send("Token non valido");
+            else
+            {
+                let newToken = CreateToken(payload);
+                res.setHeader("authorization", newToken);
+                req["payload"] = payload;
+                next();
+            }
+        });      
+    }
+    else
+        res.status(403).send("Token assente");
+});
+
+function CreateToken(dbUser :any) :any
+{
+    let date :number = Math.floor(new Date().getTime() / 1000);
+    let PayLoad = {
+        "_id" : dbUser._id,
+        "username" : dbUser.username,
+        "iat" : dbUser.iat || date,
+        "exp" : date + DURATA_TOKEN
+    };
+    return jwt.sign(PayLoad, jwtKey);
+}
+
 
 
 /* ********************** (Sezione 3) USER ROUTES  ************************** */
+app.get("/api/elencoMail", function (req, res, next) {
+    MongoClient.connect(CONNECTION_STRING, function (err, client) {
+        if(err)
+            res.status(503).send("Errore connesione al database")["log"](err);
+        else
+        {
+            const db = client.db(DBNAME);
+            const collection = db.collection("mail");
+            const userId :ObjectId = new ObjectId(req["payload"]._id);
+            collection.findOne({ "_id" : userId })
+            .then(data => res.send(data.mail.reverse()))
+            .catch(err => res.status(500).send("Errore nell'esecuzione della query")["log"](err))
+            .finally(() => client.close());
+        }
+    });
+});
 
+app.post("/api/newMail", function (req, res, next) {
+    MongoClient.connect(CONNECTION_STRING, function (err, client) {
+        if(err)
+            res.status(503).send("Errore connesione al database")["log"](err);
+        else
+        {
+            const db = client.db(DBNAME);
+            const collection = db.collection("mail");
+            let mail = {
+                "from" : req["payload"].username,
+                "subject" : req.body.subject,
+                "body" : req.body.message
+            };
+
+            collection.updateOne({ "username" : req.body.to }, { "$push" : { "mail" : mail } })
+            .then(data => res.send({ "ris" : "ok" }))
+            .catch(err => res.status(500).send("Errore nell'esecuzione della query")["log"](err))
+            .finally(() => client.close());
+        }
+    });
+});
 
 
 

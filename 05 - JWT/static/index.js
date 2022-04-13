@@ -1,16 +1,18 @@
 "use strict"
-$(document).ready(function() {
 
+$(document).ready(function() {
     let _btnInvia = $("#btnInvia");
     let _btnLogout = $("#btnLogout");
+    let _container = $(".container").hide();
 
     /* **************************** AVVIO **************************** */
     let mailRQ = inviaRichiesta('GET', '/api/elencoMail', );
     mailRQ.done(function(data) {
-        $(".container").css("visibility", "visible")
+        console.log(data);
+        _container.show();
         visualizzaMail(data);
     });
-    mailRQ.fail(errore)
+    mailRQ.fail(errore);
 
 
 
@@ -37,7 +39,7 @@ $(document).ready(function() {
             "to": $("#txtTo").val(),
             "subject": $("#txtSubject").val(),
             "message": $("#txtMessage").val()
-        }
+        };
         let newMailRQ = inviaRichiesta('POST', '/api/newMail', mail);
         newMailRQ.done(function(data) {
             console.log(data);
@@ -54,17 +56,14 @@ $(document).ready(function() {
 		_btnLogout.on("click", function() {
             let rq = inviaRichiesta('POST', '/api/logout');
             rq.done(function(data) {
-                window.location.href = "login.html"
+                window.location.href = "login.html";
             });
             rq.fail(errore)
         });
     */
 
     _btnLogout.on("click", function() {
-        localStorage.removeItem("token")
-        window.location.href = "login.html"
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
     });
-
-
 });
-
