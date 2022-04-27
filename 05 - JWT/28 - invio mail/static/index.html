@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JWT</title>
+    <link rel="icon" href="img/icoVallauri.png" type="image/png" />
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" src="libreria.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Titolo -->
+        <div class="row align-items-center">
+            <div class="col-sm-2"> </div>
+            <div class="col-sm-8 text-center" style="padding:15px;">
+                <img src="img/vallauri.jpg" class="img-fluid">
+            </div>
+            <div class="col-sm-2">  </div>
+        </div>
+
+        <!--send mail-->
+        <form class="form-inline" id="frmInvia">
+            <div class="row" style="width:100%">
+                <!-- TO -->
+                <div class="col-md-2 col-sm-12">
+                    <label for="txtTo" style="justify-content:left">TO:</label>
+                    <input type="text" class="form-control" id="txtTo" placeholder="Enter Recipient">
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <label for="txtSubject" style="justify-content:left">Subject:</label>
+                    <input type="text" class="form-control" id="txtSubject" placeholder="Enter Subject">
+                </div>
+                <div class="col-md-7 col-sm-12">
+                    <label for="txtMessage" style="justify-content:left">Message:</label>
+                    <input type="text" class="form-control" id="txtMessage" placeholder="Enter message">
+                </div>
+                <div class="col-md-1 col-sm-12">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-secondary" id="btnInvia">Invia</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!-- end container -->
+
+</body>
+
+</html>
