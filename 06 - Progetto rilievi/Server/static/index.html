@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Rilievi</title>
+        <link rel="icon" href="img/icoVallauri.png" type="image/png" />
+
+        <meta http-equiv="Content-Security-Policy" content="default-src *;  script-src * 'unsafe-inline';  style-src * 'unsafe-inline';  img-src *  data:  content:; ">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">	
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="index.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="cordova.js"> </script>
+        <script src="libreria.js"></script>
+        <script src="index.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row">   
+                <button class="btn btn-danger" id="btnLogout"> Logout </button>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 90%;"> Descrizione </th>
+                            <th style="width: 10%;"> Dettagli </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table">
+    
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" id="divDettagli">
+                    <p> Descrizione: <span>  </span> </p>
+                    <p> Operatore: <span>  </span> </p>
+                    <p> Data: <span>  </span> </p>
+                    <p> Coordinate: <span>  </span> <i class="fas fa-search-location"></i> </p>
+                    <div class="container">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

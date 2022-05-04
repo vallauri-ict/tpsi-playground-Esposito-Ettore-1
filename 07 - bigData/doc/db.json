@@ -1,0 +1,55 @@
+
+/* sensor 5578 sensore temperature tra 18 e 22, set-point 20  ogni 20 sec
+   sensor 5579 sensore temperature tra 37 e 43, set-point 40  ogni 20 sec
+   sensor 5581 sensore umidità tra 55 e 65,     set-point 60  ogni minuto
+   sensor 5582 sensore umidità tra 75 e 85,     set-point 80  ogni minuto
+   sensor 5590 sensore ph tra 7 e 8,           set-point 7.5  ogni giorno  */
+
+[ 
+	{
+      "sensor": { "sensorId": 5578, "type": "temperature" },
+      "timestamp": {"$date" : "2022-05-02T00:00:00.000Z" },
+      "value": 20.5
+   },
+   {
+      "sensor": { "sensorId": 5578, "type": "temperature" },
+      "timestamp": {"$date" : "2022-05-02T01:00:00.000Z" },
+      "value": 20.1
+   },
+   {
+      "sensor": { "sensorId": 5579, "type": "temperature" },
+      "timestamp": {"$date" : "2022-05-02T02:00:00.000Z" },
+      "value": 40.2
+   },
+   {
+      "sensor": { "sensorId": 5579, "type": "temperature" },
+      "timestamp": {"$date" : "2022-05-02T03:00:00.000Z" },
+      "value": 41.5
+   },
+   {
+      "sensor": { "sensorId": 5581, "type": "humidity" },
+      "timestamp": {"$date" : "2022-05-02T04:00:00.000Z" },
+      "value": 59.0
+   },
+   {
+      "sensor": { "sensorId": 5581, "type": "humidity" },
+      "timestamp": {"$date" : "2022-05-02T05:00:00.000Z" },
+      "value": 60.3
+   },
+   {
+      "sensor": { "sensorId": 5582, "type": "humidity" },
+      "timestamp": {"$date" : "2022-05-02T06:00:00.000Z" },
+      "value": 81.1
+   },
+   {
+      "sensor": { "sensorId": 5582, "type": "humidity" },
+      "timestamp": {"$date" : "2022-05-02T07:00:00.000Z" },
+      "value": 78.6
+   },
+   {
+      "sensor": { "sensorId": 5590, "type": "ph" },
+      "timestamp": {"$date" : "2022-05-02T08:00:00.000Z" },
+      "value": 7.4
+   },
+
+]

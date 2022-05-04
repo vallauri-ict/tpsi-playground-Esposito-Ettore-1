@@ -1,0 +1,7 @@
+
+big e open data:
+https://www.communicationvillage.com/blogs/2020/03/19/big-data-open-data-definizione-differenze-figure-professionali/
+
+
+Mongo Time Series Collections:
+https://docs.mongodb.com/manual/core/timeseries-collections/

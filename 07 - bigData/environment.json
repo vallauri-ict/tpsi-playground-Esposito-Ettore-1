@@ -1,0 +1,7 @@
+ {
+	"connectionString":{
+		"ATLAS" : "mongodb+srv://admin:admin@cluster0.8bz8q.mongodb.net/5B?retryWrites=true&w=majority",
+		"LOCAL" : "mongodb://127.0.0.1:27017"
+	}
+		
+ }
