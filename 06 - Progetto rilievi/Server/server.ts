@@ -13,18 +13,16 @@ import jwt from "jsonwebtoken";
 import * as cluodinary from "cloudinary";
 import nodemailer from "nodemailer"
 
-import ENVIROMENT from "./enviroment.json";
-
-const CONNECTION_STRING = process.env.MONGODB_URI || ENVIROMENT.CONNECTION_STRING_ATLAS;
+const CONNECTION_STRING = process.env.MONGODB_URI;
 const DBNAME = "Rilievi";
 
 const DURATA_TOKEN = 60 * 60; // sec
 const JWTKEY = process.env.JWT_KEY || fs.readFileSync("keys/jwtKey.pem");
 
 cluodinary.v2.config({
-    cloud_name: process.env.CLOUD_NAME || ENVIROMENT.cloudinary.CLOUD_NAME,
-    api_key: process.env.API_KEY || ENVIROMENT.cloudinary.API_KEY,
-    api_secret: process.env.API_SECRET || ENVIROMENT.cloudinary.API_SECRET,
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 });
 
 let messageRegister :string = fs.readFileSync("./messageRegister.html", "utf-8");
@@ -32,8 +30,8 @@ let messageReset :string = fs.readFileSync("./messageReset.html", "utf-8");
 let transporter = nodemailer.createTransport({
     "service": "gmail",
     "auth": {
-        "user" : process.env.MAIL_USER || ENVIROMENT.mailServer.user,
-        "pass" : process.env.MAIL_PASS || ENVIROMENT.mailServer.pass
+        "user" : process.env.MAIL_USER,
+        "pass" : process.env.MAIL_PASS
     }
 });
 
@@ -151,7 +149,7 @@ app.post("/api/register", function (req, res, next) {
 
             let msg = messageRegister.replace("__password", tempPassword).replace("__user", req.body.user);
             let mailOptions = {
-                "from" : process.env.MAIL_USER || ENVIROMENT.mailServer.user,
+                "from" : process.env.MAIL_USER,
                 "to" : req.body.mail,
                 "subject" : "Registrazione",
                 "html" : msg,
@@ -231,7 +229,7 @@ app.post("/api/resetPsw", function (req, res, next) {
             request.then(data => {
                 let msg = messageReset.replace("__password", tempPassword);
                 let mailOptions = {
-                    "from" : process.env.MAIL_USER || ENVIROMENT.mailServer.user,
+                    "from" : process.env.MAIL_USER,
                     "to" : req.body.mail,
                     "subject" : "Reset password",
                     "html" : msg,
@@ -293,7 +291,7 @@ app.get("/api/perizie", function (req, res, next) {
     let collection = db.collection("Perizie");
 
     let filter = req["payload"].isAdmin ? {} : { "Operatore" : req["payload"]._id };
-    let request = collection.find(filter).project({ _id : 1, Descrizione : 1 }).toArray();
+    let request = collection.find(filter).toArray();
     request.then(data => res.send(data))
            .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
            .finally(() => client.close());
@@ -355,7 +353,7 @@ app.post("/api/newImage", function (req, res, next) {
         res.status(400).send('The id is missing');
     else
     {
-        let file :UploadedFile = req.files.img as UploadedFile;
+        let file :UploadedFile = req.files.photo as UploadedFile;
         let path = './tmp/' + file.name;
         file.mv(path, function(err) {
             if (err)
@@ -370,7 +368,7 @@ app.post("/api/newImage", function (req, res, next) {
                     let oid = new ObjectId(req.body.id);
 
                     let newImage :any = {
-                        "img" : cloudRes.secure_url
+                        "url" : cloudRes.secure_url
                     };
                     if(req.body.comment)
                         newImage.Commento = req.body.comment;

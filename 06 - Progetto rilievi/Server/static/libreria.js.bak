@@ -1,6 +1,6 @@
 "use strict"
 
-const BASE_URL = "https://esposito-ettore-perizie.herokuapp.com";
+const BASE_URL = "https://esposito-ettore-perizie.herokuapp.com/";
 
 function inviaRichiesta(method, url, parameters = {}) {
     let contentType;

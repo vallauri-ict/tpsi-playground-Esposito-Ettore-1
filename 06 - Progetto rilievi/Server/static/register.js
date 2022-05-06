@@ -43,7 +43,7 @@ $(document).ready(function() {
 				window.location.href = "login.html";
 			});
 			request.fail(function(jqXHR, test_status, str_error) {
-				if (jqXHR.status == 401 || jqXHR.status == 403) // unauthorized
+				if (jqXHR.status == 401 || jqXHR.status == 403 || jqXHR.status == 409) // unauthorized - forbidden - conflict
 				{
 					_lblErrore.show();
 					_lblErrore.children("p").html("<strong>Attenzione!</strong> " + jqXHR.responseText);
