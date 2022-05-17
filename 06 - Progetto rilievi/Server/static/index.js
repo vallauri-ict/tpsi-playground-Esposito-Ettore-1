@@ -22,6 +22,7 @@ function ready () {
     let _divDettagli = $("#divDettagli").hide();
     let _divNewPhoto = $("#divNewPhoto");
     let _formNexPhoto = _divNewPhoto.children("form").hide();
+    let _sltFilter = $("#sltFilter");
 
     let mappaObj;
     let officeCoords = new google.maps.LatLng(44.7077582, 7.6877771);
@@ -31,6 +32,49 @@ function ready () {
     request.done(function (data) {
         console.log(data);
 
+        //filtro
+        _sltFilter.html("");
+        $("<option>", {
+            "appendTo" : _sltFilter,
+            "html" : "Tutti",
+            "val" : ""
+        });
+
+        _sltFilter.on("change", function () {
+            let url = _sltFilter.val() != "" ? "/api/perizieOperatore/" + _sltFilter.val() : "/api/perizie";
+
+            let request2 = inviaRichiesta("get", url);
+            request2.done(function (dataOp) {
+                console.log(dataOp);
+                CaricaDati(dataOp);
+            });
+            request2.fail(errore);
+        });
+
+        CaricaDati(data);
+
+        let operatori = [];
+        for(let perizia of data)
+        {
+            if(!operatori.includes(perizia.Operatore))
+            {
+                let request2 = inviaRichiesta("get", "/api/dettagliOperatore/" + perizia.Operatore);
+                request2.done(function (data) {
+                    console.log("operatore: ", data);
+
+                    $("<option>", {
+                        "appendTo" : _sltFilter,
+                        "html" : data.User,
+                        "val" : perizia.Operatore
+                    });
+                });
+                operatori.push(perizia.Operatore);
+            }
+        }
+    });
+    request.fail(errore);
+    
+    function CaricaDati (data) {
         //mappa
         const mapOptions = {
             center : officeCoords,
@@ -68,6 +112,7 @@ function ready () {
         }
 
         //tabella
+        _table.html("");
         for(let perizia of data)
             $("<tr>", {
                 "appendTo" : _table,
@@ -93,8 +138,7 @@ function ready () {
                     ]})
                 ]
             });
-    });
-    request.fail(errore);
+    }
 
     $("#btnLogout").on("click", function () {
         localStorage.removeItem("token");
@@ -111,7 +155,7 @@ function ready () {
     });
 
     _divNewPhoto.children("button").on("click", function () {
-        _formNexPhoto.slideDown().children().val("");
+        _formNexPhoto.slideDown(300, () => window.scrollBy(0, window.innerHeight)).children().val("");
     });
 
     _formNexPhoto.children("button").eq(0).on("click", function () {
@@ -144,6 +188,37 @@ function ready () {
         request.fail(errore);
     });
 
+    let directionsRenderer = new google.maps.DirectionsRenderer({ //metto globale per evitare di avere più route nello stesso momento
+        polylineOptions: {
+            strokeColor : "#44F",
+            strokeWeight : 6,
+            zIndex : 100
+        }
+    });
+    $("i.fa-solid.fa-route").on("click", function () {
+        let coords = currentDetails.Coordinate;
+        let coordsObj = new google.maps.LatLng(coords.lat, coords.lng);
+
+        var directionsService = new google.maps.DirectionsService();
+        var routesOptions = {
+            origin: officeCoords,
+            destination: coordsObj,
+            travelMode: google.maps.TravelMode.DRIVING,
+            provideRouteAlternatives:false,
+            avoidTolls:false,
+        };
+        directionsService.route(routesOptions, function(directionsRoutes) {
+            if (directionsRoutes.status == google.maps.DirectionsStatus.OK)
+            {                
+                directionsRenderer.setMap(mappaObj);
+                directionsRenderer.setRouteIndex(0);
+                directionsRenderer.setDirections(directionsRoutes);
+            }
+            else
+                alert("Errore nella creazione di un percorso");
+        });
+    });
+
     function Dettagli(id)
     {
         _divDettagli.slideUp(300, function () {
@@ -154,7 +229,7 @@ function ready () {
                 currentDetails = data;
 
                 let _pDettagli = _divDettagli.children("p");
-                _pDettagli.eq(0).children("span").html(data.Descrizione);
+                _pDettagli.eq(0).children("input").val(data.Descrizione);
                 _pDettagli.eq(1).children("span").html(data.Operatore);
                 _pDettagli.eq(2).children("span").html(data.Data);
                 _pDettagli.eq(3).children("span").html(data.Coordinate.lat + " - " + data.Coordinate.lng);
@@ -182,15 +257,18 @@ function ready () {
                                                 "src" : img.url
                                             } 
                                         }),
-                                        img.Commento ? $("<div>", {
+                                        $("<div>", {
                                             "addClass" : "card-body",
                                             "append" : [
-                                                $("<p>", {
-                                                    "addClass" : "card-text",
-                                                    "html" : img.Commento
+                                                $("<input>", {
+                                                    "addClass" : "card-text ",
+                                                    "prop" : {
+                                                        "type" : "text"
+                                                    },
+                                                    "val" : img.Commento ? img.Commento : ""
                                                 })
                                             ]
-                                        }): null
+                                        })
                                     ]
                                 })
                             ]
@@ -200,9 +278,20 @@ function ready () {
                 else
                     _imgContainer.html("Non ci sono ancora foto");
 
-                _divDettagli.slideDown(300);
+                _divDettagli.slideDown(300, () => window.scrollBy(0, window.innerHeight));
             });
             request.fail(errore);
         });
     }
+
+    $("i.fas.fa-upload").on("click", function () {
+        let desc = $(this).prev().val();
+        let id = currentDetails._id;
+
+        let request = inviaRichiesta("post", "/api/updateDesc", { "id" : id, "desc" : desc });
+        request.done(function (data) {
+            window.location.reload();
+        });
+        request.fail(errore);
+    });
 }

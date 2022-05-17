@@ -1,7 +1,5 @@
 "use strict"
 
-const BASE_URL = "https://esposito-ettore-perizie.herokuapp.com";
-
 function inviaRichiesta(method, url, parameters = {}) {
     let contentType;
     if (method.toUpperCase() == "GET") {
@@ -13,7 +11,7 @@ function inviaRichiesta(method, url, parameters = {}) {
     }
 
     return $.ajax({
-        url: BASE_URL + url, //default: currentPage
+        url: url, //default: currentPage
         type: method,
         data: parameters,
         contentType: contentType,

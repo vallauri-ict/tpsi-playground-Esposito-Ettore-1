@@ -1,6 +1,6 @@
 "use strict"
 
-const BASE_URL = "http://localhost:1337";
+const BASE_URL = "https://esposito-ettore-perizie.herokuapp.com";
 
 function inviaRichiesta(method, url, parameters = {}) {
     let contentType;
@@ -32,7 +32,28 @@ function inviaRichiesta(method, url, parameters = {}) {
     });
 }
 
-
+function inviaRichiestaMultipart(method, url, formData){
+    return $.ajax({
+        url: BASE_URL + url,
+        type: method,
+        data: formData,
+		contentType: false,
+		processData: false,
+		cache: false,
+        dataType: "json",
+        timeout : 5000,
+        beforeSend: function(jqXHR) { //aggiunge il token alla richiesta prima di mandarla
+            if ("token" in localStorage) {
+                let token = localStorage.getItem("token");  
+                jqXHR.setRequestHeader("authorization", token);
+            }
+        },
+        success: function(data, textStatus, jqXHR){ //eseguito prima del done
+            let token = jqXHR.getResponseHeader('authorization');
+            localStorage.setItem("token", token)  ;
+        }
+    });
+}
 
 function errore(jqXHR, testStatus, strError) {
     if (jqXHR.status == 0)

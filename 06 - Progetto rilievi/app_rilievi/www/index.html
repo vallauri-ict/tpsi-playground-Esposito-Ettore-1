@@ -1,83 +1,95 @@
 <!doctype html>
 <html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Rilievi</title>
+        <link rel="icon" href="img/logo.png" type="image/png" />
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rilievi</title>
-    <link rel="icon" href="img/icoVallauri.png" type="image/png" />
+        <meta http-equiv="Content-Security-Policy" content="default-src *;  script-src * 'unsafe-inline';  style-src * 'unsafe-inline';  img-src *  data:  content:; ">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">	
 
-    <meta http-equiv="Content-Security-Policy" content="default-src *;  script-src * 'unsafe-inline';  style-src * 'unsafe-inline';  img-src *  data:  content:; ">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-    <meta name="color-scheme" content="light dark">	
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="index.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="cordova.js"> </script>
+        <script src="libreria.js"></script>
+        <script src="index.js"></script>
+        <script src="enviroment.js"></script>
+    </head>
 
-    <link rel="stylesheet" href="index.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="cordova.js"> </script>
-    <script src="libreria.js"></script>
-    <script src="index.js"></script>
-</head>
-
-<body>
-    <div class="container">
-        <!-- Titolo -->
-        <div class="row align-items-center">
-            <div class="col-sm-2"> </div>
-            <div class="col-sm-8 text-center" style="padding:15px;">
-                <img src="img/vallauri.jpg" class="img-fluid">
+    <body>
+        <div class="container" id="wrapper">
+            <div class="row"> 
+                <button class="btn btn-danger" id="btnLogout"> Logout </button>
             </div>
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-secondary" style="margin-top:16px" id="btnLogout">Logout</button>
+            <div class="row">
+                <div class="col-sm-0 col-lg-2"></div>
+                <div class="col-sm-12 col-lg-8">
+                    <div id="mappa">
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80%;"> Descrizione </th>
+                            <th style="width: 10%;"> Localizza </th>
+                            <th style="width: 10%;"> Dettagli </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table">
+    
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" id="divDettagli">
+                    <p> Descrizione: <span>  </span> </p>
+                    <p> Operatore: <span>  </span> </p>
+                    <p> Data: <span>  </span> </p>
+                    <p> Coordinate: <span>  </span> <i class="far fa-directions"></i> </p>
+                    <div class="container">
+
+                    </div>
+
+                    <div id="divNewPhoto">
+                        <button class="btn btn-primary"> Aggiungi foto </button>
+                        <form>
+                            <div class="mb-3">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-secondary">Gallery</button>
+                                    <button type="button" class="btn btn-secondary">Camera</button>
+                                </div>
+                                <div id="divGalley">
+                                    <label> Immagine: </label>
+                                    <input type="file" class="form-control"/>
+                                </div>
+                                <div id="divCamera">
+                                    <button class="btn btn.success" type="button" id="btnTakePhoto"> Camera </button>
+                                    <img style="max-width: 40px; max-height: 40px;"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label> Commento (opzionale): </label>
+                                <input type="text" class="form-control"/>
+                            </div>
+                            
+                            <button class="btn btn-danger" type="button"> Annulla </button>
+                            <button class="btn btn-success" type="button"> Aggiungi </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!--send mail-->
-        <form class="form-inline" id="frmInvia">
-            <div class="row" style="width:100%">
-                <!-- TO -->
-                <div class="col-md-2 col-sm-12">
-                    <label for="txtTo" style="justify-content:left">TO:</label>
-                    <input type="text" class="form-control" id="txtTo" placeholder="Enter Recipient">
-                </div>
-                <div class="col-md-2 col-sm-12">
-                    <label for="txtSubject" style="justify-content:left">Subject:</label>
-                    <input type="text" class="form-control" id="txtSubject" placeholder="Enter Subject">
-                </div>
-                <div class="col-md-7 col-sm-12">
-                    <label for="txtMessage" style="justify-content:left">Message:</label>
-                    <input type="text" class="form-control" id="txtMessage" placeholder="Enter message">
-                </div>
-                <div class="col-md-1 col-sm-12">
-                    <label>&nbsp;</label>
-                    <button type="button" class="btn btn-secondary" id="btnInvia">Invia</button>
-                </div>
-            </div>
-        </form>
-
-        <!-- elenco mail-->
-        <table class="table table-hover" id="tabMail">
-            <thead>
-                <tr>
-                    <th width="16.5%">From</th>
-                    <th width="16.5%">Subject</th>
-                    <th width="67%">Body</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-
-    </div>
-    <!-- end container -->
-
-</body>
-
+    </body>
 </html>

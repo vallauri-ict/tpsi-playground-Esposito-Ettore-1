@@ -1,16 +1,12 @@
-* {
-	padding: 0;
-	margin: 0;
-}
 
-.titolo {
+.titolo{
 	font-size:15pt;
 	font-weight:bold;
 	margin-top:10px;
 }
 
 		
-.icona-rossa {
+.icona-rossa{
 	color: #dc3545;  /* colore usato da is-invalid */
 	border:1px solid #dc3545; 
 	border-right:transparent;

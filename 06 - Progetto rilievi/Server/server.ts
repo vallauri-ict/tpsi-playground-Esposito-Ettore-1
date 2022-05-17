@@ -77,7 +77,9 @@ const corsOptions = {
     origin: function(origin, callback) {
           return callback(null, true);
     },
-    credentials: true
+    credentials: true,
+    allowedHeaders: [ 'Content-Type', "authorization" ],
+    exposedHeaders: [ "authorization" ]
 };
 app.use("/", cors(corsOptions));
 
@@ -225,26 +227,24 @@ app.post("/api/resetPsw", function (req, res, next) {
                                  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "_"];
             for(let i = 0; i < 16; i++)
                 tempPassword += base64Chars[Math.floor(base64Chars.length * Math.random())];
-            let request = collection.updateOne({ "_id" : dbUser._id }, { "$set" : { "cambioPassword" : true, "Password" : bcrypt.hashSync(tempPassword, 10) } });
-            request.then(data => {
-                let msg = messageReset.replace("__password", tempPassword);
-                let mailOptions = {
-                    "from" : process.env.MAIL_USER,
-                    "to" : req.body.mail,
-                    "subject" : "Reset password",
-                    "html" : msg,
-                };
-                transporter.sendMail(mailOptions, function (err, data) {
-                    if(!err)
-                        res.send({ "ris" : "ok" });
-                    else
-                        res.status(500).send("Errore invio mail: " + err.message)["log"](err);
-                });
-
-                res.send({ "ris" : "ok" });
-            })
-            .catch(err => res.status(500).send("Errore esecuzione query")["log"](err))
-            .finally(() => client.close());
+            let msg = messageReset.replace("__password", tempPassword);
+            let mailOptions = {
+                "from" : process.env.MAIL_USER,
+                "to" : req.body.mail,
+                "subject" : "Reset password",
+                "html" : msg,
+            };
+            transporter.sendMail(mailOptions, function (err, data) {
+                if(!err)
+                {
+                    let request = collection.updateOne({ "_id" : dbUser._id }, { "$set" : { "cambioPassword" : true, "Password" : bcrypt.hashSync(tempPassword, 10) } });
+                    request.then(data => res.send({ "ris" : "ok" }))
+                           .catch(err => res.status(500).send("Errore esecuzione query")["log"](err))
+                           .finally(() => client.close());
+                }
+                else
+                    res.status(500).send("Errore invio mail: " + err.message)["log"](err);
+            });
         }
     });
 });
@@ -297,6 +297,29 @@ app.get("/api/perizie", function (req, res, next) {
            .finally(() => client.close());
 });
 
+app.get("/api/perizieOperatore/:id", function (req, res, next) {
+    let client :MongoClient = req["client"];
+    let db = client.db(DBNAME);
+    let collection = db.collection("Perizie");
+
+    let request = collection.find({ "Operatore" : req.params.id }).toArray();
+    request.then(data => res.send(data))
+           .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
+           .finally(() => client.close());
+});
+
+app.get("/api/dettagliOperatore/:id", function (req, res, next) {
+    let client :MongoClient = req["client"];
+    let db = client.db(DBNAME);
+    let collection = db.collection("Operatori");
+
+    let oid = new ObjectId(req.params.id);
+    let request = collection.findOne({ "_id" : oid });
+    request.then(data => res.send(data))
+    .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
+    .finally(() => client.close());
+});
+
 app.get("/api/dettagliPerizia/:id", function (req, res, next) {
     let client :MongoClient = req["client"];
     let db = client.db(DBNAME);
@@ -346,6 +369,23 @@ app.post("/api/newPerizia", function (req, res, next) {
     }
 });
 
+app.post("/api/updateDesc", function (req, res, next) {
+    if(!req.body.id)
+        res.status(400).send('The id is missing');
+    else
+    {
+        let client :MongoClient = req["client"];
+        let db = client.db(DBNAME);
+        let collection = db.collection("Perizie");
+        let oid = new ObjectId(req.body.id);
+
+        let reqest = collection.updateOne({ "_id" : oid }, { "$set" : { "Descrizione" : req.body.desc } });
+        reqest.then(data => res.send(data))
+              .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
+              .finally(() => client.close());
+    }
+});
+
 app.post("/api/newImage", function (req, res, next) {
     if (!req.files || Object.keys(req.files).length == 0)
         res.status(400).send('No file was uploaded');
@@ -382,6 +422,38 @@ app.post("/api/newImage", function (req, res, next) {
                 .finally(() => fs.rm(path, function () {}));
             }
         });
+    }
+});
+
+app.post("/api/newImageBase64", function (req, res, next) {
+    if (!req.body.img)
+        res.status(400).send('No file was uploaded');
+    else if(!req.body.img.toString().startsWith("data:image"))
+        res.status(400).send('Not correct file tipe');
+    else if(!req.body.id)
+        res.status(400).send('The id is missing');
+    else
+    {
+        cluodinary.v2.uploader.upload(req.body.img, { folder : "Perizie" })
+        .then(function (cloudRes :cluodinary.UploadApiResponse) {
+            let client :MongoClient = req["client"];
+            let db = client.db(DBNAME);
+            let collection = db.collection("Perizie");
+            let oid = new ObjectId(req.body.id);
+
+            let newImage :any = {
+                "url" : cloudRes.secure_url
+            };
+            if(req.body.comment)
+                newImage.Commento = req.body.comment;
+        
+            let request = collection.updateOne({ _id : oid }, { $push : { "Foto" : newImage } });
+            request
+            .then(data => res.send(data))
+            .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
+            .finally(() => client.close());
+        })
+        .catch(err => res.status(500).send("error while uploading file")["log"](err));
     }
 });
 

@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>JWT</title>	
-		<link rel="icon" href="img/icoVallauri.png" type="image/png" />
+		<title>Perizie</title>	
+		<link rel="icon" href="img/logo.png" type="image/png" />
 
 		<meta http-equiv="Content-Security-Policy" content="default-src *;  script-src * 'unsafe-inline';  style-src * 'unsafe-inline';  img-src *  data:  content:; ">
 		<meta name="format-detection" content="telephone=no">
@@ -34,7 +34,7 @@
 				<div class="col-md-6 col-sm-2"></div>
 			</div>
 
-			<div class="row  text-center" id="login">   
+			<div class="row text-center" id="login">   
 				<div class="col-md-3 col-sm-2"></div>
 				<div class="col-md-6 col-sm-8">			
 					<form id="frmLogin">
@@ -42,34 +42,99 @@
 							<span class="input-group-text">
 								<i class="fas fa-user"> </i>
 							</span>
-							<input type="text" class="form-control" id="usr" placeholder="Username">
+							<input type="text" class="form-control" id="usr" placeholder="eMail">
 						</div>
 						
 						<div class="form-group input-group">
 							<span class="input-group-text">
 								<i class="fas fa-lock"> </i>
 							</span>
-							<input type="password" class="form-control" id="pwd"
-								placeholder="Password">
+							<input type="password" class="form-control" id="pwd" placeholder="Password">
 						</div>
 
 						<div class="alert alert-danger alert-dismissible" id="lblErrore">	
 							<button type="button" class="close" >&times;</button>
-							<strong>Attenzione!</strong> Username o Password non validi
+							<p> <strong>Attenzione!</strong> </p>
 						</div>
 
 						<div class="form-group">
-							<button type="button" class="btn btn-secondary btn-block" 
-									id="btnLogin">	LOGIN
-							</button>	
-							<button type="button" class="btn btn-link" style="height:18px">
-									registrati  
-							</button>	
-							<br>
-							<button type="button" class="btn btn-link" style="height:18px">
-								hai dimenticato la password?  
-							</button>								
+							<button type="button" class="btn btn-secondary btn-block" id="btnLogin"> LOGIN </button>
+							<br/>	
+							<a href="register.html" class="btn btn-link"> Registrati </a> 
+							<br/>
+							<a class="btn btn-link" id="btnResetPassword"> Hai dimenticato la password? </a>	
+							<br/>
+							<a class="btn btn-link" id="btnChangePassword"> Cambia password? </a>								
 						</div>					
+					</form>
+				</div>	
+				<div class="col-md-3 col-sm-3"></div>
+			</div>
+
+			<div class="row text-center" id="changePassword">
+				<div class="col-md-3 col-sm-2"></div>
+				<div class="col-md-6 col-sm-8">			
+					<form id="frmChange">
+						<div class="form-group input-group">
+							<span class="input-group-text">
+								<i class="fas fa-user"> </i>
+							</span>
+							<input type="text" class="form-control" id="changeUsr" placeholder="eMail">
+						</div>
+						
+						<div class="form-group input-group">
+							<span class="input-group-text">
+								<i class="fas fa-lock"> </i>
+							</span>
+							<input type="password" class="form-control" id="oldPwd" placeholder="Vecchia Password">
+						</div>
+
+						<div class="form-group input-group">
+							<span class="input-group-text">
+								<i class="fas fa-lock"> </i>
+							</span>
+							<input type="password" class="form-control" id="newPwd" placeholder="Nuova Password">
+						</div>
+
+						<div class="form-group input-group">
+							<span class="input-group-text">
+								<i class="fas fa-lock"> </i>
+							</span>
+							<input type="password" class="form-control" id="newPwdRep" placeholder="Ripeti Password">
+						</div>
+
+						<div class="alert alert-danger alert-dismissible" id="lblChangeErrore">	
+							<button type="button" class="close" >&times;</button>
+							<p> <strong>Attenzione!</strong> </p>
+						</div>
+						
+						<div class="form-group">
+							<button type="button" class="btn btn-secondary btn-block" id="btnChange"> CAMBIA PASSWORD </button>							
+						</div>
+					</form>
+				</div>	
+				<div class="col-md-3 col-sm-3"></div>
+			</div>
+
+			<div class="row text-center" id="resetPassword">
+				<div class="col-md-3 col-sm-2"></div>
+				<div class="col-md-6 col-sm-8">			
+					<form id="frmReset">
+						<div class="form-group input-group">
+							<span class="input-group-text">
+								<i class="fas fa-user"> </i>
+							</span>
+							<input type="text" class="form-control" id="resetUsr" placeholder="eMail">
+						</div>
+
+						<div class="alert alert-danger alert-dismissible" id="lblResetErrore">	
+							<button type="button" class="close" >&times;</button>
+							<p> <strong>Attenzione!</strong> </p>
+						</div>
+						
+						<div class="form-group">
+							<button type="button" class="btn btn-secondary btn-block" id="btnReset"> INVIA MAIL </button>							
+						</div>
 					</form>
 				</div>	
 				<div class="col-md-3 col-sm-3"></div>
