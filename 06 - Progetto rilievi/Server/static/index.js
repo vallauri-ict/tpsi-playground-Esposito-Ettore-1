@@ -25,7 +25,7 @@ function ready () {
     let _sltFilter = $("#sltFilter");
 
     let mappaObj;
-    let officeCoords = new google.maps.LatLng(44.7077582, 7.6877771);
+    let officeCoords = new google.maps.LatLng(44.6486898, 7.654133);
     let currentDetails;
 
     let request = inviaRichiesta("get", "/api/perizie");
@@ -178,7 +178,7 @@ function ready () {
         if(comment != "")
             formData.append("comment", comment);
 
-        let request = inviaRichiestaMultipart("post", "/api/newImage", formData);
+        let request = inviaRichiestaMultipart("patch", "/api/newImage", formData);
         request.done(function (data) {
             console.log(data);
 
@@ -195,9 +195,9 @@ function ready () {
             zIndex : 100
         }
     });
-    $("i.fa-solid.fa-route").on("click", function () {
-        let coords = currentDetails.Coordinate;
-        let coordsObj = new google.maps.LatLng(coords.lat, coords.lng);
+    $("i.fas.fa-road").on("click", function () {
+        let _sender = $(this);
+        let coordsObj = new google.maps.LatLng(_sender.attr("lat"), _sender.attr("lng"));
 
         var directionsService = new google.maps.DirectionsService();
         var routesOptions = {
@@ -213,6 +213,8 @@ function ready () {
                 directionsRenderer.setMap(mappaObj);
                 directionsRenderer.setRouteIndex(0);
                 directionsRenderer.setDirections(directionsRoutes);
+
+                window.scrollTo(0,0);
             }
             else
                 alert("Errore nella creazione di un percorso");
@@ -231,7 +233,7 @@ function ready () {
                 let _pDettagli = _divDettagli.children("p");
                 _pDettagli.eq(0).children("input").val(data.Descrizione);
                 _pDettagli.eq(1).children("span").html(data.Operatore);
-                _pDettagli.eq(2).children("span").html(data.Data);
+                _pDettagli.eq(2).children("span").html(new Date(data.Data).toLocaleDateString());
                 _pDettagli.eq(3).children("span").html(data.Coordinate.lat + " - " + data.Coordinate.lng);
                 _pDettagli.eq(3).children("i").attr({ "lat" : data.Coordinate.lat, "lng" : data.Coordinate.lng });
 
@@ -260,12 +262,31 @@ function ready () {
                                         $("<div>", {
                                             "addClass" : "card-body",
                                             "append" : [
-                                                $("<input>", {
+                                                $("<div>", {
                                                     "addClass" : "card-text ",
-                                                    "prop" : {
-                                                        "type" : "text"
-                                                    },
-                                                    "val" : img.Commento ? img.Commento : ""
+                                                    "append" : [
+                                                        $("<input>", {
+                                                            "prop" : {
+                                                                "type" : "text"
+                                                            },
+                                                            "css" : {
+                                                              "width" : "80%",
+                                                              "display" : "inluìine"  
+                                                            },
+                                                            "val" : img.Commento ? img.Commento : ""
+                                                        }),
+                                                        $("<i>", {
+                                                            "addClass" : "fas fa-upload",
+                                                            "on" : {
+                                                                "click" : function () {
+                                                                    let comment = $(this).prev().val();
+                                                                    let request = inviaRichiesta("patch", "/api/updateComment", { "id" : data._id, "pos" : count - 1, "comment" : comment });
+                                                                    request.done(() => Dettagli(data._id));
+                                                                    request.fail(errore);
+                                                                }
+                                                            }
+                                                        })
+                                                    ]
                                                 })
                                             ]
                                         })
@@ -288,7 +309,7 @@ function ready () {
         let desc = $(this).prev().val();
         let id = currentDetails._id;
 
-        let request = inviaRichiesta("post", "/api/updateDesc", { "id" : id, "desc" : desc });
+        let request = inviaRichiesta("patch", "/api/updateDesc", { "id" : id, "desc" : desc });
         request.done(function (data) {
             window.location.reload();
         });

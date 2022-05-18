@@ -25,7 +25,7 @@ function ready () {
         let _formNewPhoto = _divNewPhoto.children("form").hide();
 
         let mappaObj;
-        let officeCoords = new google.maps.LatLng(44.7077582, 7.6877771);
+        let officeCoords = new google.maps.LatLng(44.6486898, 7.654133);
         let currentDetails;
 
         let request = inviaRichiesta("get", "/api/perizie");
@@ -117,6 +117,55 @@ function ready () {
             mappaObj.panTo(pos);
         });
 
+        let directionsRenderer = new google.maps.DirectionsRenderer({ //metto globale per evitare di avere più route nello stesso momento
+            polylineOptions: {
+                strokeColor : "#44F",
+                strokeWeight : 6,
+                zIndex : 100
+            }
+        });
+        const gpsOptions = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+        let watchId;
+        $("i.fas.fa-road").on("click", function () {
+            let _sender = $(this);
+            watchId = navigator.geolocation.watchPosition(function (position) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+
+                let origin = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                let destination = new google.maps.LatLng(_sender.attr("lat"), _sender.attr("lng"));
+        
+                let directionsService = new google.maps.DirectionsService();
+                let routesOptions = {
+                    origin: origin,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    provideRouteAlternatives:false,
+                    avoidTolls:false,
+                };
+                directionsService.route(routesOptions, function(directionsRoutes) {
+                    if (directionsRoutes.status == google.maps.DirectionsStatus.OK)
+                    {                
+                        directionsRenderer.setMap(mappaObj);
+                        directionsRenderer.setRouteIndex(0);
+                        directionsRenderer.setDirections(directionsRoutes);
+
+                        window.scrollTo(0,0);
+                    }
+                    else
+                        showAlert("Errore nella creazione di un percorso");
+                });
+            }, function (err) {
+                showAlert(err);
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }, gpsOptions);
+        });
+
         _divNewPhoto.children("button").on("click", function () {
             _formNewPhoto.slideDown(300, () => window.scrollBy(0, window.innerHeight)).children().val("");
         });
@@ -124,7 +173,6 @@ function ready () {
         _formNewPhoto.children("button").eq(0).on("click", function () {
             _formNewPhoto.slideUp();
         });
-
 
         let photoB64;
         let _divGallery = $("#divGalley"),
@@ -179,7 +227,7 @@ function ready () {
                 if(comment != "")
                     formData.append("comment", comment);
     
-                let request = inviaRichiestaMultipart("post", "/api/newImage", formData);
+                let request = inviaRichiestaMultipart("patch", "/api/newImage", formData);
                 request.done(function (data) {
                     console.log(data);
     
@@ -205,7 +253,7 @@ function ready () {
                 if(comment != "")
                     newImg.comment = comment;
     
-                let request = inviaRichiesta("post", "/api/newImageBase64", newImg);
+                let request = inviaRichiesta("patch", "/api/newImageBase64", newImg);
                 request.done(function (data) {
                     console.log(data);
     

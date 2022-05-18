@@ -342,11 +342,9 @@ app.get("/api/dettagliPerizia/:id", function (req, res, next) {
 });
 
 app.post("/api/newPerizia", function (req, res, next) {
-    if(!req.body.Operatore)
-        res.status(400).send("The operator is missing");
     if(!req.body.Coordinate)
         res.status(400).send("The coordinates are missing");
-    if(!req.body.Desc)
+    else if(!req.body.Desc)
         res.status(400).send("The description is missing");
     else
     {
@@ -355,7 +353,7 @@ app.post("/api/newPerizia", function (req, res, next) {
         let collection = db.collection("Perizie");
 
         let newPerizia :any = {
-            "Operatore" : req.body.Operatore,
+            "Operatore" : req["payload"]._id,
             "Data" : new Date(),
             "Coordinate" : req.body.Coordinate,
             "Descrizione" : req.body.Desc,
@@ -369,7 +367,7 @@ app.post("/api/newPerizia", function (req, res, next) {
     }
 });
 
-app.post("/api/updateDesc", function (req, res, next) {
+app.patch("/api/updateDesc", function (req, res, next) {
     if(!req.body.id)
         res.status(400).send('The id is missing');
     else
@@ -386,7 +384,41 @@ app.post("/api/updateDesc", function (req, res, next) {
     }
 });
 
-app.post("/api/newImage", function (req, res, next) {
+app.patch("/api/updateComment", function (req, res, next) {
+    if(!req.body.id)
+        res.status(400).send('The perizia\'s id is missing');
+    else if(!req.body.pos)
+        res.status(400).send('The image number is missing');
+    else
+    {
+        let client :MongoClient = req["client"];
+        let db = client.db(DBNAME);
+        let collection = db.collection("Perizie");
+        let oid = new ObjectId(req.body.id);
+
+        let reqest = collection.findOne({ "_id" : oid }, { projection: { "Foto" : 1, "_id" : 0 } });
+        reqest.then(data => {
+            if(data.Foto.length <= req.body.pos || req.body.pos < 0)
+            {
+                res.status(400).send('The image number is not valid');
+                client.close();
+            }
+            else
+            {
+                let newComment = data.Foto;
+                newComment[req.body.pos].Commento = req.body.comment || "";
+    
+                let reqest = collection.updateOne({ "_id" : oid }, { "$set" : { "Foto" : newComment } }, {upsert : true});
+                reqest.then(data => res.send(data))
+                      .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
+                      .finally(() => client.close());
+            }
+        })
+        .catch(err => res.status(503).send("Error while executing query:\n" + err)["log"](err))
+    }
+});
+
+app.patch("/api/newImage", function (req, res, next) {
     if (!req.files || Object.keys(req.files).length == 0)
         res.status(400).send('No file was uploaded');
     else if(!req.body.id)
@@ -425,7 +457,7 @@ app.post("/api/newImage", function (req, res, next) {
     }
 });
 
-app.post("/api/newImageBase64", function (req, res, next) {
+app.patch("/api/newImageBase64", function (req, res, next) {
     if (!req.body.img)
         res.status(400).send('No file was uploaded');
     else if(!req.body.img.toString().startsWith("data:image"))

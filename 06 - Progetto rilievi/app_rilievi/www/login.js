@@ -227,7 +227,7 @@ $(document).ready(function() {
 
 				$("#btnChangePassword").trigger("click");
 				
-				alert("Le è arrivata una mail con una password temporanea.\nUtilizzi quella per il primo accesso e le sarà consentito di modificarla");
+				showAlert("Le è arrivata una mail con una password temporanea.\nUtilizzi quella per il primo accesso e le sarà consentito di modificarla");
 			});		
 		}
 	}
@@ -236,3 +236,12 @@ $(document).ready(function() {
 		_lblResetErrore.hide();
 	});
 });
+
+function showAlert(msg){
+	navigator.notification.alert(
+		msg,     // Messaggio da visualizzare
+		function(){},      // callback anonima
+		"Alert",           // Titolo finestra
+		"ok"             // pulsante di chiusura (singolo)
+	);
+}

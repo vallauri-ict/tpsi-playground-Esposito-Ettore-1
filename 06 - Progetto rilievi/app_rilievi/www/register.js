@@ -39,7 +39,7 @@ $(document).ready(function() {
 		{
 			let request = inviaRichiesta('POST', '/api/register', { "mail": _eMail.val(), "user" : _usr.val()});
 			request.done(function(data, textStatus, request) {
-				alert("Ti è arrivata una mail con dentro la password temporanea che andrà cambiata al primo login.\n Può procedere a effettuare il login");
+				showAlert("Ti è arrivata una mail con dentro la password temporanea che andrà cambiata al primo login.\n Può procedere a effettuare il login");
 				window.location.href = "login.html";
 			});
 			request.fail(function(jqXHR, test_status, str_error) {
@@ -58,3 +58,12 @@ $(document).ready(function() {
 		_lblErrore.hide();
 	});
 });
+
+function showAlert(msg){
+	navigator.notification.alert(
+		msg,     // Messaggio da visualizzare
+		function(){},      // callback anonima
+		"Alert",           // Titolo finestra
+		"ok"             // pulsante di chiusura (singolo)
+	);
+}
