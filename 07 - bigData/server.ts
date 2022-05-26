@@ -3,7 +3,6 @@ import http from "http";
 import express from "express";
 import body_parser from "body-parser";
 import cors from "cors";
-import fileUpload, { UploadedFile } from "express-fileupload";
 import {MongoClient, ObjectId}  from "mongodb";
 import environment from "./environment.json"
 
@@ -51,10 +50,10 @@ function init() {
 
 /* *********************** (Sezione 1) Middleware ********************* */
 // 1. Request log
-app.use("/", function(req, res, next) {
+/*app.use("/", function(req, res, next) {
     console.log("** " + req.method + " ** : " + req.originalUrl);
     next();
-});
+});*/
 
 
 // 2 - route risorse statiche
@@ -67,13 +66,13 @@ app.use("/", body_parser.urlencoded({"extended": true, "limit": "10mb"}));
 
 
 // 4 - log dei parametri 
-app.use("/", function(req, res, next) {
+/*app.use("/", function(req, res, next) {
     if (Object.keys(req.query).length > 0)
         console.log("        Parametri GET: ", req.query)
     if (Object.keys(req.body).length != 0)
         console.log("        Parametri BODY: ", req.body)
     next();
-});
+});*/
 
 
 // 5. cors accepting every call
@@ -86,12 +85,6 @@ const corsOptions = {
 app.use("/", cors(corsOptions));
 
 
-// 6 - binary upload
-app.use("/", fileUpload({
-    "limits": { "fileSize": (10 * 1024 * 1024) } // 10*1024*1024 // 10 M
-}));
-
-
 /* ********************* (Sezione 3) USER ROUTES  ************************** */
 app.get('/api/getData', function(req, res, next) {
     MongoClient.connect(CONNECTION_STRING,  function(err, client) {
@@ -100,23 +93,35 @@ app.get('/api/getData', function(req, res, next) {
         } else {
             const DB = client.db(DB_NAME);
             const collection = DB.collection(COLLECTION);
-			let sensorId = parseInt(req.query.sensor)
-			console.log(sensorId)
-            collection.find({"sensor.sensorId":sensorId}).toArray(function(err, data) {
+            collection.find().sort({ "timeStamp" : -1 }).limit(200).toArray(function(err, data) {
                 if (err)
                     res.status(500).send("Errore esecuzione query")
-                else {
-					console.log(data)
+                else
                     res.send(data);
-                }
                 client.close();
             });
         }
     });
 });
 
-
-
+app.get('/api/getSensorData', function(req, res, next) {
+    MongoClient.connect(CONNECTION_STRING,  function(err, client) {
+        if (err) {
+            res.status(503).send("Errore di connessione al database")
+        } else {
+            const DB = client.db(DB_NAME);
+            const collection = DB.collection(COLLECTION);
+			let sensorId = parseInt(req.query.sensor)
+            collection.find({"sensor.sensorId":sensorId}).sort({ "timeStamp" : -1 }).limit(200).toArray(function(err, data) {
+                if (err)
+                    res.status(500).send("Errore esecuzione query")
+                else
+                    res.send(data);
+                client.close();
+            });
+        }
+    });
+});
 
 /* ********************** (Sezione 4) DEFAULT ROUTE  ************************* */
 

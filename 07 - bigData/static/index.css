@@ -1,8 +1,16 @@
-
-.row{
-	width:100%;
+* {
+    padding: 0;
+    margin: 0;
 }
 
-button{
-	margin:20px;
+.graphPage {
+    border: 1px solid #dee2e6;
+    border-top: none;
+    margin: 0;
+    padding: 0;
+}
+
+.graph {
+    width: 400px;
+    height: 400px;
 }
