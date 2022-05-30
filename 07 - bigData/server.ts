@@ -86,18 +86,21 @@ app.use("/", cors(corsOptions));
 
 
 /* ********************* (Sezione 3) USER ROUTES  ************************** */
-app.get('/api/getData', function(req, res, next) {
+app.get('/api/getSensors', function(req, res, next) {
     MongoClient.connect(CONNECTION_STRING,  function(err, client) {
         if (err) {
             res.status(503).send("Errore di connessione al database")
         } else {
             const DB = client.db(DB_NAME);
             const collection = DB.collection(COLLECTION);
-            collection.find().sort({ "timeStamp" : -1 }).limit(200).toArray(function(err, data) {
+            collection.distinct("sensor", function(err, data) {
                 if (err)
                     res.status(500).send("Errore esecuzione query")
                 else
+                {
+                    data.sort((a, b) => a.sensorId - b.sensorId);
                     res.send(data);
+                }
                 client.close();
             });
         }

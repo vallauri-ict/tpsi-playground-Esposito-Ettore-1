@@ -1,126 +1,31 @@
 "use strict"
 
 $(document).ready(function() {
-    let _wrapper = $("#Wrapper");
-    let timer;
-
-    let _navigation = $("#navBar").find(".nav-link").on("click", function () {
-        let sender = $(this);
-        let target = sender.attr("to");
-
-        _navigation.removeClass("active");
-        sender.addClass("active");
-
-        _wrapper.children().hide();
-        $("#" + target).show();
-
-        if(timer)
-            clearInterval(timer);
-    });
-
-    // *** TUTTE MISURE *** //
-
-    let _canvasTemp = $("#graphTemp")[0],
-        _canvasHum = $("#graphHum")[0],
-        _canvasPh = $("#graphPh")[0];
-    let chartTemp, chartHum, chartPh;
-    let _tempDetails = $(_canvasTemp).next().find("span"),
-        _humDetails = $(_canvasHum).next().find("span"),
-        _phDetails = $(_canvasPh).next().find("span");
-
-    _navigation.eq(0).on("click", function () { //tutti sensori
-        AllGraph();
-        timer = setInterval(AllGraph, 5000);
-    }).trigger("click");
-
-    function AllGraph () { 
-        let request = inviaRichiesta("get", "/api/getData");
-        request.done(function (data) {
-            let forGraph = {
-                "temperature" : { "values" : [], "times" : [] },
-                "humidity" : { "values" : [], "times" : [] },
-                "ph" : { "values" : [], "times" : [] }
-            };
-            for(let sensorScan of data)
-            {
-                forGraph[sensorScan.sensor.type].values.push(sensorScan.value);
-                forGraph[sensorScan.sensor.type].times.push(sensorScan.timeStamp.substring(11, 19));
-            }
-
-            if (chartTemp)
-                chartTemp.destroy();
-            forGraph.temperature.values = forGraph.temperature.values.reverse();
-            chartTemp = new Chart(_canvasTemp, {
-                type : "line",
-                data : {
-                    labels : forGraph.temperature.times.reverse(),
-                    datasets : [
-                        {
-                            label : "temperature",
-                            data : forGraph.temperature.values,
-                            backgroundColor : 'rgb(255, 0, 0)',
-                            borderColor : 'rgb(255, 0, 0)'
-                        }
-                    ]
-                }
-            });
-            fillData(forGraph.temperature.values, _tempDetails);
-
-            if (chartHum)
-                chartHum.destroy();
-            forGraph.humidity.values = forGraph.humidity.values.reverse();
-            chartHum = new Chart(_canvasHum, {
-                type : "line",
-                data : {
-                    labels : forGraph.humidity.times.reverse(),
-                    datasets : [
-                        {
-                            label : "humidity",
-                            data : forGraph.humidity.values,
-                            backgroundColor : 'rgb(0, 0, 255)',
-                            borderColor : 'rgb(0, 0, 255)'
-                        }
-                    ]
-                }
-            });
-            fillData(forGraph.humidity.values, _humDetails);
-
-            if (chartPh)
-                chartPh.destroy();
-            forGraph.ph.values = forGraph.ph.values.reverse();
-            chartPh = new Chart(_canvasPh, {
-                type : "line",
-                data : {
-                    labels : forGraph.ph.times.reverse(),
-                    datasets : [
-                        {
-                            label : "ph",
-                            data : forGraph.ph.values,
-                            backgroundColor : 'rgb(255, 0, 255)',
-                            borderColor : 'rgb(255, 0, 255)'
-                        }
-                    ]
-                }
-            });
-            fillData(forGraph.ph.values, _phDetails);
-        });
-        request.fail(errore);
-    }
-
-    // *** SINGOLO SENSORE *** //
-
-    let _sltSensor = $("#sltSensor").on("change", function () {
-        SensorGraph();
-        if(timer)
-            clearInterval(timer);
-        timer = setInterval(SensorGraph, 5000);
-    });
+    let _sltSensor = $("#sltSensor")
     let _canvasSensor = $("#graphSensor")[0];
     let chartSensor;
     let _sensorDetails = $(_canvasSensor).next().find("span");
+    let timer;
 
-    _navigation.eq(1).on("click", function () { //singolo sensore
+    let request = inviaRichiesta("get", "/api/getSensors");
+    request.done(function (data) {
+        console.log(data);
+
+        for(let sensor of data)
+            $("<option>", {
+                "appendTo" : _sltSensor,
+                "html" : `${sensor.sensorId} - ${sensor.type}`,
+                "val" : sensor.sensorId
+            });
+        
+        _sltSensor.trigger("change");
+    });
+    request.fail(errore);
+
+    _sltSensor.on("change", function () {
         SensorGraph();
+        if(timer)
+            clearInterval(timer);
         timer = setInterval(SensorGraph, 5000);
     });
 
@@ -151,14 +56,15 @@ $(document).ready(function() {
                             borderColor : color,
                         }
                     ]
+                },
+                options: {
+                    animations : false
                 }
             });
             fillData(values, _sensorDetails);
         });
         request.fail(errore);
     }
-
-    // *** ELENCO FUNZIONI *** //
 
     function fillData (data, spans) {
         //media

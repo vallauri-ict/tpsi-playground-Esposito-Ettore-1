@@ -21,7 +21,7 @@ let sensors = [
 
 
 /* ******************** TEMPERATURE ********************* */
-setInterval(writeTemperature, 2000);
+setInterval(writeTemperature, 1000);
 function writeTemperature(){
 	// moment() restituisce la data corrente sotto forma di oggetto moment
 	// il metodo format() restituisce la versione ISO Date con un timezone locale
@@ -61,7 +61,7 @@ function writeTemperature(){
 }
 
 /* ******************** HUMIDITY ********************* */
-setInterval(writeHumidity, 5000);
+setInterval(writeHumidity, 2000);
 function writeHumidity(){	
 	// Greenwich time
 	let currentTime = new Date() 
@@ -95,7 +95,7 @@ function writeHumidity(){
 }
 
 /* ******************** PH ********************* */
-setInterval(writePH, 7000);
+setInterval(writePH, 3000);
 function writePH(){	
 	// Greenwich time
 	let currentTime = new Date() 
